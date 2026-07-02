@@ -1,0 +1,76 @@
+{
+  "timestamp": "2026-07-02T11:28:55.385496",
+  "params": {
+    "n_sites": 24,
+    "d": 34,
+    "k": 3,
+    "radius": 0.5,
+    "noise_std": 0.05,
+    "n_trials": 50,
+    "seed": 42
+  },
+  "planted_holonomy": 1.594414793292735,
+  "max_adjacent_distance": 0.15564274658895616,
+  "by_sample_size": {
+    "100": {
+      "berry_mean": 1.3263823901765324,
+      "berry_std": 0.5797398982851206,
+      "null_mean": 1.0187197734038538,
+      "null_std": 0.4557145685175281,
+      "separation_sigma": 0.6751213106342572,
+      "recovery_fraction": 0.8318929275846277,
+      "detection_power": 0.18,
+      "threshold_95": 1.8747287541665576
+    },
+    "200": {
+      "berry_mean": 1.3261292996294154,
+      "berry_std": 0.45785087533993934,
+      "null_mean": 0.7582108410414165,
+      "null_std": 0.3408052464727797,
+      "separation_sigma": 1.666401748405475,
+      "recovery_fraction": 0.831734191885372,
+      "detection_power": 0.62,
+      "threshold_95": 1.2908651431179403
+    },
+    "500": {
+      "berry_mean": 1.1989072667113836,
+      "berry_std": 0.4056612825176034,
+      "null_mean": 0.42875508417216424,
+      "null_std": 0.24404313627595228,
+      "separation_sigma": 3.1558034956097605,
+      "recovery_fraction": 0.7519418859852888,
+      "detection_power": 0.8,
+      "threshold_95": 0.9042243594329377
+    },
+    "1000": {
+      "berry_mean": 1.1791025035473066,
+      "berry_std": 0.3861323235152037,
+      "null_mean": 0.3824656343535315,
+      "null_std": 0.17725645171682372,
+      "separation_sigma": 4.494261627590534,
+      "recovery_fraction": 0.7395205491741966,
+      "detection_power": 0.92,
+      "threshold_95": 0.6710117457489052
+    },
+    "2000": {
+      "berry_mean": 1.0838900911825373,
+      "berry_std": 0.30182592095892985,
+      "null_mean": 0.2258489391173714,
+      "null_std": 0.1252758089010254,
+      "separation_sigma": 6.849216617256603,
+      "recovery_fraction": 0.6798043368276343,
+      "detection_power": 0.98,
+      "threshold_95": 0.46836552484313587
+    },
+    "5000": {
+      "berry_mean": 1.2423283867984736,
+      "berry_std": 0.3409809544584566,
+      "null_mean": 0.16111244752388404,
+      "null_std": 0.07786750563119012,
+      "separation_sigma": 13.885329066473968,
+      "recovery_fraction": 0.7791751506725901,
+      "detection_power": 1.0,
+      "threshold_95": 0.25973677368916515
+    }
+  }
+}

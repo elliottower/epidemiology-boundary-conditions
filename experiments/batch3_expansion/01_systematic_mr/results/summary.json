@@ -1,0 +1,202 @@
+{
+  "timestamp": "2026-07-02T10:39:21.058548",
+  "alpha": 0.05,
+  "n_pairs": 61,
+  "domains": {
+    "MS": {
+      "n": 9,
+      "n_correct": 8,
+      "accuracy": 0.8888888888888888
+    },
+    "AD": {
+      "n": 17,
+      "n_correct": 12,
+      "accuracy": 0.7058823529411765
+    },
+    "cardiometabolic": {
+      "n": 18,
+      "n_correct": 18,
+      "accuracy": 1.0
+    },
+    "cancer": {
+      "n": 11,
+      "n_correct": 10,
+      "accuracy": 0.9090909090909091
+    },
+    "psychiatric": {
+      "n": 6,
+      "n_correct": 4,
+      "accuracy": 0.6666666666666666
+    }
+  },
+  "metrics": {
+    "accuracy": 0.8524590163934426,
+    "sensitivity": 0.5909090909090909,
+    "specificity": 1.0,
+    "tp": 13,
+    "fn": 9,
+    "fp": 0,
+    "tn": 39,
+    "n_correct": 52,
+    "n_total": 61
+  },
+  "bootstrap_95ci": {
+    "accuracy_ci": [
+      0.7540983606557377,
+      0.9344262295081968
+    ],
+    "sensitivity_ci": [
+      0.375,
+      0.8
+    ],
+    "specificity_ci": [
+      1.0,
+      1.0
+    ]
+  },
+  "alpha_sweep": [
+    {
+      "alpha": 0.001,
+      "accuracy": 0.7704918032786885,
+      "sensitivity": 0.36363636363636365,
+      "specificity": 1.0,
+      "tp": 8,
+      "fn": 14,
+      "fp": 0,
+      "tn": 39,
+      "n_correct": 47,
+      "n_total": 61
+    },
+    {
+      "alpha": 0.005,
+      "accuracy": 0.819672131147541,
+      "sensitivity": 0.5,
+      "specificity": 1.0,
+      "tp": 11,
+      "fn": 11,
+      "fp": 0,
+      "tn": 39,
+      "n_correct": 50,
+      "n_total": 61
+    },
+    {
+      "alpha": 0.01,
+      "accuracy": 0.8360655737704918,
+      "sensitivity": 0.5454545454545454,
+      "specificity": 1.0,
+      "tp": 12,
+      "fn": 10,
+      "fp": 0,
+      "tn": 39,
+      "n_correct": 51,
+      "n_total": 61
+    },
+    {
+      "alpha": 0.025,
+      "accuracy": 0.8524590163934426,
+      "sensitivity": 0.5909090909090909,
+      "specificity": 1.0,
+      "tp": 13,
+      "fn": 9,
+      "fp": 0,
+      "tn": 39,
+      "n_correct": 52,
+      "n_total": 61
+    },
+    {
+      "alpha": 0.05,
+      "accuracy": 0.8524590163934426,
+      "sensitivity": 0.5909090909090909,
+      "specificity": 1.0,
+      "tp": 13,
+      "fn": 9,
+      "fp": 0,
+      "tn": 39,
+      "n_correct": 52,
+      "n_total": 61
+    },
+    {
+      "alpha": 0.075,
+      "accuracy": 0.8688524590163934,
+      "sensitivity": 0.6363636363636364,
+      "specificity": 1.0,
+      "tp": 14,
+      "fn": 8,
+      "fp": 0,
+      "tn": 39,
+      "n_correct": 53,
+      "n_total": 61
+    },
+    {
+      "alpha": 0.1,
+      "accuracy": 0.9016393442622951,
+      "sensitivity": 0.7272727272727273,
+      "specificity": 1.0,
+      "tp": 16,
+      "fn": 6,
+      "fp": 0,
+      "tn": 39,
+      "n_correct": 55,
+      "n_total": 61
+    },
+    {
+      "alpha": 0.15,
+      "accuracy": 0.9180327868852459,
+      "sensitivity": 0.7727272727272727,
+      "specificity": 1.0,
+      "tp": 17,
+      "fn": 5,
+      "fp": 0,
+      "tn": 39,
+      "n_correct": 56,
+      "n_total": 61
+    },
+    {
+      "alpha": 0.2,
+      "accuracy": 0.9180327868852459,
+      "sensitivity": 0.7727272727272727,
+      "specificity": 1.0,
+      "tp": 17,
+      "fn": 5,
+      "fp": 0,
+      "tn": 39,
+      "n_correct": 56,
+      "n_total": 61
+    },
+    {
+      "alpha": 0.3,
+      "accuracy": 0.9180327868852459,
+      "sensitivity": 0.7727272727272727,
+      "specificity": 1.0,
+      "tp": 17,
+      "fn": 5,
+      "fp": 0,
+      "tn": 39,
+      "n_correct": 56,
+      "n_total": 61
+    },
+    {
+      "alpha": 0.5,
+      "accuracy": 1.0,
+      "sensitivity": 1.0,
+      "specificity": 1.0,
+      "tp": 22,
+      "fn": 0,
+      "fp": 0,
+      "tn": 39,
+      "n_correct": 61,
+      "n_total": 61
+    }
+  ],
+  "misclassified": [
+    "ancestry_amyloid_threshold",
+    "age_lecanemab_response",
+    "T2D_AD_MR",
+    "BMI_depression_MR",
+    "education_schizophrenia_MR",
+    "SBP_AD_MR",
+    "APOE2_AD_protective",
+    "insulin_resistance_pancreatic_cancer_MR",
+    "gut_microbiome_MS"
+  ]
+}

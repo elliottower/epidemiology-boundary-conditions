@@ -1,0 +1,15 @@
+{
+  "mode": "berry_phase",
+  "n_sites": 24,
+  "n_subjects_per_site": 200,
+  "d": 34,
+  "k": 3,
+  "radius": 0.5,
+  "noise_std": 0.05,
+  "site_bias_std": 0.05,
+  "scanner_scale_std": 0.03,
+  "seed": 42,
+  "planted_holonomy": 1.594414793292735,
+  "max_planted_pairwise": 1.4142135623730954,
+  "max_adjacent_distance": 0.15564274658895616
+}

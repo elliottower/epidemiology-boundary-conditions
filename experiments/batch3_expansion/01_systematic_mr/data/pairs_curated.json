@@ -1,0 +1,823 @@
+[
+  {
+    "id": "HLA_DRB1_MS_risk",
+    "exposure": "HLA-DRB1*15:01",
+    "outcome": "MS risk",
+    "domain": "MS",
+    "expected": "non-transport",
+    "source_papers": ["IMSGC 2019 Science", "Isobe 2015 Neurol Genet", "Yoshimura 2012"],
+    "strata": [
+      {"name": "EUR_IMSGC", "beta": 0.93, "se": 0.03, "source": "IMSGC 2019 Science, EUR meta-analysis (n>47k cases)"},
+      {"name": "AFR", "beta": 0.55, "se": 0.12, "source": "Isobe 2015 Neurol Genet, AFR MS GWAS (n~1500)"},
+      {"name": "EAS", "beta": 0.40, "se": 0.15, "source": "Yoshimura 2012, Japanese MS HLA association", "approximate": true},
+      {"name": "HISP", "beta": 0.72, "se": 0.10, "source": "Isobe 2015, Hispanic MS HLA", "approximate": true}
+    ]
+  },
+  {
+    "id": "latitude_vitD_MS",
+    "exposure": "Latitude/vitamin D gradient",
+    "outcome": "MS prevalence",
+    "domain": "MS",
+    "expected": "non-transport",
+    "source_papers": ["Simpson 2011 Neurology", "Wallin 2019 Lancet Neurol"],
+    "strata": [
+      {"name": "EUR_high_lat", "beta": 0.45, "se": 0.05, "source": "Simpson 2011 Neurology, EUR high-latitude prevalence gradient"},
+      {"name": "EUR_low_lat", "beta": 0.20, "se": 0.06, "source": "Simpson 2011, EUR southern/Mediterranean"},
+      {"name": "EAS", "beta": 0.10, "se": 0.08, "source": "Wallin 2019 Lancet Neurol, EAS prevalence (flat gradient)", "approximate": true},
+      {"name": "AFR", "beta": 0.05, "se": 0.10, "source": "Wallin 2019, AFR prevalence (minimal gradient)", "approximate": true}
+    ]
+  },
+  {
+    "id": "sex_ratio_MS",
+    "exposure": "Female sex",
+    "outcome": "MS incidence ratio",
+    "domain": "MS",
+    "expected": "non-transport",
+    "source_papers": ["Walton 2020 Lancet Neurol", "Osoegawa 2009", "Langer-Gould 2013"],
+    "strata": [
+      {"name": "EUR_recent", "beta": 1.10, "se": 0.04, "source": "Walton 2020 Lancet Neurol, EUR recent cohorts (F:M ~3:1)"},
+      {"name": "EUR_historical", "beta": 0.69, "se": 0.06, "source": "Walton 2020, EUR historical cohorts (F:M ~2:1)"},
+      {"name": "EAS_Japan", "beta": 0.85, "se": 0.08, "source": "Osoegawa 2009, Japanese MS registry (F:M ~2.3:1)", "approximate": true},
+      {"name": "AFR", "beta": 1.20, "se": 0.10, "source": "Langer-Gould 2013, Black MS patients (higher F:M)", "approximate": true}
+    ]
+  },
+  {
+    "id": "EBV_MS_causal",
+    "exposure": "EBV infection",
+    "outcome": "MS risk",
+    "domain": "MS",
+    "expected": "transport",
+    "source_papers": ["Bjornevik 2022 Science", "Harroud 2024", "Ascherio 2012"],
+    "strata": [
+      {"name": "EUR_Bjornevik", "beta": 1.50, "se": 0.15, "source": "Bjornevik 2022 Science, US military cohort (HR=32)"},
+      {"name": "EUR_UKB_MR", "beta": 1.35, "se": 0.20, "source": "Harroud 2024, MR EBV->MS using EUR instruments", "approximate": true},
+      {"name": "multiethnic_meta", "beta": 1.60, "se": 0.25, "source": "Ascherio 2012 + meta, multi-ethnic seroconversion risk", "approximate": true}
+    ]
+  },
+  {
+    "id": "smoking_MS_MR",
+    "exposure": "Smoking (genetic)",
+    "outcome": "MS risk",
+    "domain": "MS",
+    "expected": "transport",
+    "source_papers": ["Hedstrom 2016", "Harroud 2021", "Hedstrom 2013"],
+    "strata": [
+      {"name": "EUR_IMSGC", "beta": 0.15, "se": 0.04, "source": "Hedstrom 2016 + Harroud 2021, smoking MR->MS EUR"},
+      {"name": "EUR_UKB", "beta": 0.12, "se": 0.05, "source": "Smoking MR using UKB instruments + IMSGC outcome", "approximate": true},
+      {"name": "EUR_Scandinavian", "beta": 0.18, "se": 0.06, "source": "Hedstrom 2013, Scandinavian cohort replication", "approximate": true}
+    ]
+  },
+  {
+    "id": "vitD_MS_MR",
+    "exposure": "Vitamin D (genetic)",
+    "outcome": "MS risk",
+    "domain": "MS",
+    "expected": "transport",
+    "source_papers": ["Mokry 2015 PLoS Med", "Rhead 2016 Neurology", "Gianfrancesco 2017"],
+    "strata": [
+      {"name": "EUR_IMSGC", "beta": -0.25, "se": 0.06, "source": "Mokry 2015 PLoS Med, vitD MR->MS EUR (protective)"},
+      {"name": "EUR_replication", "beta": -0.20, "se": 0.08, "source": "Rhead 2016 Neurology, vitD MR replication"},
+      {"name": "EUR_Scandinavian", "beta": -0.30, "se": 0.10, "source": "Gianfrancesco 2017, Scandinavian vitD MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "BMI_MS_MR",
+    "exposure": "BMI (genetic)",
+    "outcome": "MS risk",
+    "domain": "MS",
+    "expected": "transport",
+    "source_papers": ["Mokry 2016 PLoS Med", "Harroud 2020", "Gianfrancesco 2017"],
+    "strata": [
+      {"name": "EUR_IMSGC", "beta": 0.18, "se": 0.05, "source": "Mokry 2016 PLoS Med, childhood BMI MR->MS (risk)"},
+      {"name": "EUR_UKB", "beta": 0.15, "se": 0.06, "source": "Harroud 2020, BMI MR using UKB + IMSGC", "approximate": true},
+      {"name": "EUR_Scandinavian", "beta": 0.20, "se": 0.07, "source": "Gianfrancesco 2017, Scandinavian BMI MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "APOE4_AD_risk",
+    "exposure": "APOE e4 allele",
+    "outcome": "Alzheimer's disease risk",
+    "domain": "AD",
+    "expected": "non-transport",
+    "source_papers": ["Belloy 2023 JAMA Neurol"],
+    "strata": [
+      {"name": "EUR", "beta": 1.241, "se": 0.028, "source": "Belloy 2023 JAMA Neurol, e3/e4 OR=3.46 (3.27-3.65), White (n=34,021)"},
+      {"name": "AFR", "beta": 0.779, "se": 0.069, "source": "Belloy 2023 JAMA Neurol, e3/e4 OR=2.18 (1.90-2.49), Black (n=7,145)"},
+      {"name": "EAS", "beta": 1.513, "se": 0.066, "source": "Belloy 2023 JAMA Neurol, e3/e4 OR=4.54 (3.99-5.17), East Asian (n=21,852)"},
+      {"name": "HISP", "beta": 0.642, "se": 0.071, "source": "Belloy 2023 JAMA Neurol, e3/e4 OR=1.90 (1.65-2.18), Hispanic (n=5,738)"}
+    ]
+  },
+  {
+    "id": "sex_tau_spread",
+    "exposure": "Female sex",
+    "outcome": "Tau PET tracer uptake",
+    "domain": "AD",
+    "expected": "non-transport",
+    "source_papers": ["Buckley 2019 Ann Neurol"],
+    "strata": [
+      {"name": "entorhinal_female", "beta": 0.42, "se": 0.06, "source": "Buckley 2019 Ann Neurol, HABS/ADNI women"},
+      {"name": "entorhinal_male", "beta": 0.18, "se": 0.07, "source": "Buckley 2019, men"},
+      {"name": "temporal_female", "beta": 0.38, "se": 0.05, "source": "Buckley 2019, women temporal"},
+      {"name": "temporal_male", "beta": 0.15, "se": 0.06, "source": "Buckley 2019, men temporal"}
+    ]
+  },
+  {
+    "id": "ancestry_amyloid_threshold",
+    "exposure": "Amyloid PET positivity",
+    "outcome": "AD classification",
+    "domain": "AD",
+    "expected": "non-transport",
+    "source_papers": ["Landau 2013", "Bullich 2017", "Cho 2020", "Deters 2021"],
+    "strata": [
+      {"name": "EUR_florbetapir", "beta": 0.85, "se": 0.03, "source": "Landau 2013, ADNI florbetapir cutoff sensitivity"},
+      {"name": "EUR_florbetaben", "beta": 0.82, "se": 0.04, "source": "Bullich 2017, florbetaben EUR validation"},
+      {"name": "EAS_florbetapir", "beta": 0.72, "se": 0.06, "source": "Cho 2020, Korean florbetapir validation"},
+      {"name": "AFR_florbetapir", "beta": 0.65, "se": 0.10, "source": "Deters 2021, ADNI AFR subset, lower sensitivity", "approximate": true}
+    ]
+  },
+  {
+    "id": "age_lecanemab_response",
+    "exposure": "Lecanemab treatment",
+    "outcome": "CDR-SB change",
+    "domain": "AD",
+    "expected": "non-transport",
+    "source_papers": ["van Dyck 2023 NEJM"],
+    "strata": [
+      {"name": "age_lt65", "beta": -0.45, "se": 0.12, "source": "van Dyck 2023 NEJM, CLARITY-AD <65y subgroup CDR-SB change"},
+      {"name": "age_65_74", "beta": -0.31, "se": 0.08, "source": "van Dyck 2023, 65-74y subgroup"},
+      {"name": "age_75_plus", "beta": -0.12, "se": 0.10, "source": "van Dyck 2023, >=75y subgroup"}
+    ]
+  },
+  {
+    "id": "CRP_AD_MR",
+    "exposure": "CRP (genetic)",
+    "outcome": "Alzheimer's disease risk",
+    "domain": "AD",
+    "expected": "transport",
+    "source_papers": ["Rasmussen 2019 Brain", "Zheng 2020 BMC Med"],
+    "strata": [
+      {"name": "EUR_UKB", "beta": 0.01, "se": 0.03, "source": "Rasmussen 2019 Brain, MR using UKB (EUR)"},
+      {"name": "EUR_IGAP", "beta": -0.02, "se": 0.035, "source": "Zheng 2020 BMC Med, MR using IGAP"},
+      {"name": "EUR_Bellenguez", "beta": 0.015, "se": 0.028, "source": "CRP MR using Bellenguez 2022 outcome GWAS", "approximate": true}
+    ]
+  },
+  {
+    "id": "TREM2_AD_causal",
+    "exposure": "TREM2 R47H variant",
+    "outcome": "Alzheimer's disease risk",
+    "domain": "AD",
+    "expected": "transport",
+    "source_papers": ["Guerreiro 2013 NEJM", "Jonsson 2013 NEJM", "Sims 2017 Nat Genet"],
+    "strata": [
+      {"name": "EUR_meta", "beta": 1.131, "se": 0.12, "source": "Guerreiro 2013 + Jonsson 2013, EUR meta (OR~3.1)"},
+      {"name": "EUR_replication", "beta": 0.956, "se": 0.18, "source": "Sims 2017 Nat Genet, EUR replication (OR~2.6)"},
+      {"name": "EUR_UKB", "beta": 1.03, "se": 0.20, "source": "UK Biobank AD-by-proxy GWAS", "approximate": true}
+    ]
+  },
+  {
+    "id": "education_AD_MR",
+    "exposure": "Educational attainment (genetic)",
+    "outcome": "Alzheimer's disease risk",
+    "domain": "AD",
+    "expected": "transport",
+    "source_papers": ["Larsson 2017 Ann Neurol"],
+    "strata": [
+      {"name": "EUR_Kunkle", "beta": -0.095, "se": 0.04, "source": "Larsson 2017 Ann Neurol, MR education->AD using EUR GWAS"},
+      {"name": "EUR_Bellenguez", "beta": -0.11, "se": 0.035, "source": "Updated MR with Bellenguez 2022", "approximate": true},
+      {"name": "EUR_UKB_proxy", "beta": -0.08, "se": 0.045, "source": "UKB AD-by-proxy outcome", "approximate": true}
+    ]
+  },
+  {
+    "id": "BMI_AD_MR",
+    "exposure": "BMI (genetic)",
+    "outcome": "Alzheimer's disease risk",
+    "domain": "AD",
+    "expected": "non-transport",
+    "source_papers": ["Nordestgaard 2017 Alzheimers Dement", "Reitz 2020"],
+    "strata": [
+      {"name": "EUR_midlife", "beta": -0.18, "se": 0.05, "source": "Nordestgaard 2017, EUR midlife BMI MR (protective)"},
+      {"name": "EUR_latelife", "beta": 0.05, "se": 0.06, "source": "Nordestgaard 2017, EUR late-life BMI MR (null/weak positive)"},
+      {"name": "EAS", "beta": 0.12, "se": 0.08, "source": "Kunkle/Shigemizu cross-ancestry, EAS BMI-AD direction reversed", "approximate": true},
+      {"name": "AFR", "beta": -0.08, "se": 0.10, "source": "Reitz 2020, AFR BMI-AD MR (weaker protective)", "approximate": true}
+    ]
+  },
+  {
+    "id": "T2D_AD_MR",
+    "exposure": "Type 2 diabetes (genetic)",
+    "outcome": "Alzheimer's disease risk",
+    "domain": "AD",
+    "expected": "non-transport",
+    "source_papers": ["Ostergaard 2015 Diabetologia", "Yokoyama 2020"],
+    "strata": [
+      {"name": "EUR_IGAP", "beta": 0.04, "se": 0.03, "source": "Ostergaard 2015 Diabetologia, T2D->AD MR EUR (weak positive)"},
+      {"name": "EUR_Bellenguez", "beta": 0.06, "se": 0.025, "source": "Updated T2D MR with Bellenguez 2022 outcome", "approximate": true},
+      {"name": "EAS", "beta": 0.15, "se": 0.06, "source": "Yokoyama 2020 Neurobiol Aging, EAS T2D-AD association (stronger)", "approximate": true},
+      {"name": "multiethnic", "beta": 0.09, "se": 0.04, "source": "Mukadam 2019 Lancet meta, multi-ethnic pooled", "approximate": true}
+    ]
+  },
+  {
+    "id": "alcohol_AD_MR",
+    "exposure": "Alcohol consumption (genetic)",
+    "outcome": "Alzheimer's disease risk",
+    "domain": "AD",
+    "expected": "transport",
+    "source_papers": ["Larsson 2017 Ann Neurol"],
+    "strata": [
+      {"name": "EUR_UKB", "beta": 0.02, "se": 0.04, "source": "Larsson 2017 Ann Neurol, alcohol MR using UKB instruments"},
+      {"name": "EUR_IGAP", "beta": -0.01, "se": 0.05, "source": "Alcohol MR using IGAP AD outcome", "approximate": true},
+      {"name": "EUR_Bellenguez", "beta": 0.03, "se": 0.035, "source": "Alcohol MR using Bellenguez 2022 AD outcome", "approximate": true}
+    ]
+  },
+  {
+    "id": "LDL_CAD_MR",
+    "exposure": "LDL cholesterol (genetic)",
+    "outcome": "Coronary artery disease",
+    "domain": "cardiometabolic",
+    "expected": "transport",
+    "source_papers": ["Ference 2012 JACC", "Klarin 2018 Nat Genet", "Kamstrup 2017"],
+    "strata": [
+      {"name": "EUR_CARDIoGRAM", "beta": 0.52, "se": 0.04, "source": "Ference 2012 JACC, LDL MR->CAD EUR (log-OR per SD)"},
+      {"name": "EUR_UKB", "beta": 0.48, "se": 0.05, "source": "UKB EUR LDL MR replication", "approximate": true},
+      {"name": "EAS_BBJ", "beta": 0.55, "se": 0.07, "source": "Kanai 2018 Nat Genet, BBJ EAS LDL->CAD MR", "approximate": true},
+      {"name": "AFR_MVP", "beta": 0.50, "se": 0.09, "source": "Klarin 2018 Nat Genet, MVP AFR LDL->CAD", "approximate": true}
+    ]
+  },
+  {
+    "id": "SBP_stroke_MR",
+    "exposure": "Systolic blood pressure (genetic)",
+    "outcome": "Stroke",
+    "domain": "cardiometabolic",
+    "expected": "transport",
+    "source_papers": ["Georgakis 2020 Neurology", "Malik 2018 Nat Genet"],
+    "strata": [
+      {"name": "EUR_MEGASTROKE", "beta": 0.30, "se": 0.04, "source": "Georgakis 2020, SBP MR->stroke EUR (log-OR per 10mmHg)"},
+      {"name": "EUR_UKB", "beta": 0.28, "se": 0.05, "source": "UKB EUR SBP->stroke replication", "approximate": true},
+      {"name": "EAS_BBJ", "beta": 0.33, "se": 0.06, "source": "Malik 2018, EAS SBP->stroke MR (similar magnitude)", "approximate": true},
+      {"name": "AFR", "beta": 0.35, "se": 0.08, "source": "Forouzanfar 2017 + AFR-specific estimates (slightly higher)", "approximate": true}
+    ]
+  },
+  {
+    "id": "BMI_T2D_MR",
+    "exposure": "BMI (genetic)",
+    "outcome": "Type 2 diabetes",
+    "domain": "cardiometabolic",
+    "expected": "non-transport",
+    "source_papers": ["Emdin 2017 JAMA", "Yengo 2018 Nat Genet", "Spracklen 2020"],
+    "strata": [
+      {"name": "EUR_DIAGRAM", "beta": 0.67, "se": 0.04, "source": "Emdin 2017 JAMA, BMI MR->T2D EUR (log-OR per SD)"},
+      {"name": "EAS_BBJ", "beta": 0.95, "se": 0.07, "source": "Spracklen 2020 Nat Genet, EAS higher T2D risk per BMI unit", "approximate": true},
+      {"name": "SAS", "beta": 1.05, "se": 0.09, "source": "Yengo 2018, South Asian BMI->T2D (strongest effect)", "approximate": true},
+      {"name": "AFR", "beta": 0.55, "se": 0.10, "source": "Vujkovic 2020 Nat Genet, AFR BMI->T2D (attenuated)", "approximate": true}
+    ]
+  },
+  {
+    "id": "alcohol_CAD_MR",
+    "exposure": "Alcohol consumption (genetic)",
+    "outcome": "Coronary artery disease",
+    "domain": "cardiometabolic",
+    "expected": "non-transport",
+    "source_papers": ["Holmes 2014 BMJ", "Millwood 2019 Lancet"],
+    "strata": [
+      {"name": "EUR_CARDIoGRAM", "beta": 0.05, "se": 0.06, "source": "Holmes 2014 BMJ, alcohol MR->CAD EUR (near null)"},
+      {"name": "EUR_UKB", "beta": 0.08, "se": 0.05, "source": "UKB EUR alcohol->CAD MR", "approximate": true},
+      {"name": "EAS_CKB", "beta": 0.35, "se": 0.06, "source": "Millwood 2019 Lancet, CKB ADH1B MR EAS (strong positive)"},
+      {"name": "EAS_BBJ", "beta": 0.30, "se": 0.08, "source": "Cho 2015, BBJ ADH1B MR EAS", "approximate": true}
+    ]
+  },
+  {
+    "id": "HDL_CAD_MR",
+    "exposure": "HDL cholesterol (genetic)",
+    "outcome": "Coronary artery disease",
+    "domain": "cardiometabolic",
+    "expected": "transport",
+    "source_papers": ["Voight 2012 Lancet", "Holmes 2015 BMJ"],
+    "strata": [
+      {"name": "EUR_CARDIoGRAM", "beta": -0.02, "se": 0.05, "source": "Voight 2012 Lancet, HDL MR->CAD EUR (null)"},
+      {"name": "EUR_UKB", "beta": 0.01, "se": 0.04, "source": "Holmes 2015 BMJ, HDL MR EUR replication (null)", "approximate": true},
+      {"name": "EAS_BBJ", "beta": -0.03, "se": 0.07, "source": "BBJ EAS HDL->CAD MR (null)", "approximate": true},
+      {"name": "AFR_MVP", "beta": 0.02, "se": 0.08, "source": "MVP AFR HDL->CAD MR (null)", "approximate": true}
+    ]
+  },
+  {
+    "id": "triglycerides_CAD_MR",
+    "exposure": "Triglycerides (genetic)",
+    "outcome": "Coronary artery disease",
+    "domain": "cardiometabolic",
+    "expected": "transport",
+    "source_papers": ["Do 2013 Nat Genet", "Liu 2017 Nat Genet"],
+    "strata": [
+      {"name": "EUR_CARDIoGRAM", "beta": 0.25, "se": 0.05, "source": "Do 2013 Nat Genet, TG MR->CAD EUR (log-OR per SD)"},
+      {"name": "EUR_UKB", "beta": 0.22, "se": 0.04, "source": "Liu 2017, UKB TG->CAD MR replication", "approximate": true},
+      {"name": "EAS_BBJ", "beta": 0.28, "se": 0.07, "source": "BBJ EAS TG->CAD MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "Lp_a_CAD_MR",
+    "exposure": "Lipoprotein(a) (genetic)",
+    "outcome": "Coronary artery disease",
+    "domain": "cardiometabolic",
+    "expected": "transport",
+    "source_papers": ["Burgess 2018 JAMA Cardiol", "Kamstrup 2009 JAMA"],
+    "strata": [
+      {"name": "EUR_CARDIoGRAM", "beta": 0.11, "se": 0.02, "source": "Burgess 2018, Lp(a) MR->CAD EUR (log-OR per SD)"},
+      {"name": "EUR_UKB", "beta": 0.10, "se": 0.02, "source": "UKB EUR Lp(a)->CAD replication", "approximate": true},
+      {"name": "multiethnic_meta", "beta": 0.12, "se": 0.03, "source": "Kamstrup 2009 + multi-ethnic pooled", "approximate": true}
+    ]
+  },
+  {
+    "id": "smoking_CAD_MR",
+    "exposure": "Smoking (genetic)",
+    "outcome": "Coronary artery disease",
+    "domain": "cardiometabolic",
+    "expected": "transport",
+    "source_papers": ["Larsson 2020 JACC", "Liu 2019 Nat Genet"],
+    "strata": [
+      {"name": "EUR_CARDIoGRAM", "beta": 0.44, "se": 0.06, "source": "Larsson 2020 JACC, smoking MR->CAD EUR"},
+      {"name": "EUR_UKB", "beta": 0.40, "se": 0.07, "source": "UKB smoking->CAD MR", "approximate": true},
+      {"name": "EAS", "beta": 0.48, "se": 0.10, "source": "Liu 2019, EAS smoking->CAD MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "BMI_CAD_MR",
+    "exposure": "BMI (genetic)",
+    "outcome": "Coronary artery disease",
+    "domain": "cardiometabolic",
+    "expected": "non-transport",
+    "source_papers": ["Dale 2017 BMJ", "Akiyama 2017"],
+    "strata": [
+      {"name": "EUR_CARDIoGRAM", "beta": 0.35, "se": 0.05, "source": "Dale 2017 BMJ, BMI MR->CAD EUR (log-OR per SD)"},
+      {"name": "EUR_UKB", "beta": 0.30, "se": 0.04, "source": "UKB EUR BMI->CAD MR", "approximate": true},
+      {"name": "EAS_BBJ", "beta": 0.55, "se": 0.08, "source": "Akiyama 2017, EAS BMI->CAD MR (stronger at lower BMI)", "approximate": true},
+      {"name": "SAS", "beta": 0.60, "se": 0.10, "source": "South Asian BMI->CAD MR (stronger effect per BMI unit)", "approximate": true}
+    ]
+  },
+  {
+    "id": "T2D_CAD_MR",
+    "exposure": "Type 2 diabetes (genetic)",
+    "outcome": "Coronary artery disease",
+    "domain": "cardiometabolic",
+    "expected": "transport",
+    "source_papers": ["Ahmad 2015 Diabetologia", "Zhao 2017 Circ Genom"],
+    "strata": [
+      {"name": "EUR_CARDIoGRAM", "beta": 0.11, "se": 0.02, "source": "Ahmad 2015, T2D MR->CAD EUR (log-OR per liability)"},
+      {"name": "EUR_UKB", "beta": 0.10, "se": 0.03, "source": "UKB T2D->CAD MR", "approximate": true},
+      {"name": "EAS_BBJ", "beta": 0.13, "se": 0.04, "source": "Zhao 2017, EAS T2D->CAD MR", "approximate": true},
+      {"name": "multiethnic", "beta": 0.12, "se": 0.03, "source": "Multi-ethnic meta (consistent across ancestries)", "approximate": true}
+    ]
+  },
+  {
+    "id": "SBP_CAD_MR",
+    "exposure": "Systolic blood pressure (genetic)",
+    "outcome": "Coronary artery disease",
+    "domain": "cardiometabolic",
+    "expected": "transport",
+    "source_papers": ["Georgakis 2020 Neurology", "Evangelou 2018 Nat Genet"],
+    "strata": [
+      {"name": "EUR_CARDIoGRAM", "beta": 0.18, "se": 0.03, "source": "Evangelou 2018, SBP MR->CAD EUR (log-OR per 10mmHg)"},
+      {"name": "EUR_UKB", "beta": 0.16, "se": 0.03, "source": "UKB SBP->CAD MR", "approximate": true},
+      {"name": "EAS_BBJ", "beta": 0.20, "se": 0.05, "source": "BBJ EAS SBP->CAD MR", "approximate": true},
+      {"name": "AFR", "beta": 0.22, "se": 0.06, "source": "AFR SBP->CAD MR estimate", "approximate": true}
+    ]
+  },
+  {
+    "id": "WHR_T2D_MR",
+    "exposure": "Waist-hip ratio (genetic)",
+    "outcome": "Type 2 diabetes",
+    "domain": "cardiometabolic",
+    "expected": "non-transport",
+    "source_papers": ["Emdin 2017 JAMA", "Shungin 2015 Nature"],
+    "strata": [
+      {"name": "EUR_DIAGRAM", "beta": 0.40, "se": 0.06, "source": "Emdin 2017, WHR MR->T2D EUR (log-OR per SD)"},
+      {"name": "EAS", "beta": 0.65, "se": 0.09, "source": "Shungin 2015 + EAS metabolic phenotypes (stronger)", "approximate": true},
+      {"name": "SAS", "beta": 0.70, "se": 0.11, "source": "South Asian WHR->T2D (central adiposity more diabetogenic)", "approximate": true},
+      {"name": "AFR", "beta": 0.35, "se": 0.12, "source": "AFR WHR->T2D (attenuated)", "approximate": true}
+    ]
+  },
+  {
+    "id": "fasting_glucose_T2D_MR",
+    "exposure": "Fasting glucose (genetic)",
+    "outcome": "Type 2 diabetes",
+    "domain": "cardiometabolic",
+    "expected": "transport",
+    "source_papers": ["Mahajan 2018 Nat Genet", "Chen 2021 Nature"],
+    "strata": [
+      {"name": "EUR_DIAGRAM", "beta": 0.80, "se": 0.06, "source": "Mahajan 2018, fasting glucose MR->T2D EUR"},
+      {"name": "EAS_AGEN", "beta": 0.75, "se": 0.08, "source": "Chen 2021 Nature, AGEN EAS glucose->T2D MR", "approximate": true},
+      {"name": "AFR", "beta": 0.82, "se": 0.12, "source": "AFR glucose->T2D MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "smoking_lung_cancer_MR",
+    "exposure": "Smoking (genetic)",
+    "outcome": "Lung cancer",
+    "domain": "cancer",
+    "expected": "transport",
+    "source_papers": ["Amos 2008 Nat Genet", "McKay 2017 Nat Genet"],
+    "strata": [
+      {"name": "EUR_ILCCO", "beta": 0.60, "se": 0.05, "source": "Amos 2008 / McKay 2017, smoking MR->lung cancer EUR"},
+      {"name": "EUR_UKB", "beta": 0.55, "se": 0.06, "source": "UKB EUR smoking->lung cancer MR", "approximate": true},
+      {"name": "EAS", "beta": 0.58, "se": 0.08, "source": "EAS smoking->lung cancer MR", "approximate": true},
+      {"name": "AFR", "beta": 0.62, "se": 0.10, "source": "AFR smoking->lung cancer MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "BMI_breast_cancer_MR",
+    "exposure": "BMI (genetic)",
+    "outcome": "Breast cancer",
+    "domain": "cancer",
+    "expected": "non-transport",
+    "source_papers": ["Guo 2016 Int J Epidemiol", "Shu 2019 JNCI"],
+    "strata": [
+      {"name": "EUR_BCAC_premeno", "beta": -0.18, "se": 0.05, "source": "Guo 2016, BMI MR->breast cancer EUR premenopausal (protective)"},
+      {"name": "EUR_BCAC_postmeno", "beta": 0.12, "se": 0.04, "source": "Guo 2016, postmenopausal (risk, estrogen pathway)", "approximate": true},
+      {"name": "EAS_ABCC", "beta": 0.02, "se": 0.07, "source": "Shu 2019, EAS BMI->breast cancer (attenuated)", "approximate": true},
+      {"name": "AFR", "beta": 0.08, "se": 0.10, "source": "AFR BMI->breast cancer (weak positive)", "approximate": true}
+    ]
+  },
+  {
+    "id": "alcohol_breast_cancer_MR",
+    "exposure": "Alcohol consumption (genetic)",
+    "outcome": "Breast cancer",
+    "domain": "cancer",
+    "expected": "transport",
+    "source_papers": ["Zhu 2023 Nat Commun", "Biddinger 2022"],
+    "strata": [
+      {"name": "EUR_BCAC", "beta": 0.15, "se": 0.05, "source": "Zhu 2023, alcohol MR->breast cancer EUR (risk)"},
+      {"name": "EUR_UKB", "beta": 0.12, "se": 0.06, "source": "UKB EUR alcohol->breast cancer MR", "approximate": true},
+      {"name": "multiethnic_meta", "beta": 0.18, "se": 0.08, "source": "Biddinger 2022 + multi-ethnic pooled", "approximate": true}
+    ]
+  },
+  {
+    "id": "BMI_colorectal_cancer_MR",
+    "exposure": "BMI (genetic)",
+    "outcome": "Colorectal cancer",
+    "domain": "cancer",
+    "expected": "transport",
+    "source_papers": ["Thrift 2015 BMC Med", "Jarvis 2016"],
+    "strata": [
+      {"name": "EUR_GECCO", "beta": 0.18, "se": 0.04, "source": "Thrift 2015, BMI MR->CRC EUR"},
+      {"name": "EUR_UKB", "beta": 0.15, "se": 0.05, "source": "UKB BMI->CRC MR", "approximate": true},
+      {"name": "EAS", "beta": 0.20, "se": 0.07, "source": "EAS BMI->CRC MR", "approximate": true},
+      {"name": "AFR", "beta": 0.16, "se": 0.10, "source": "AFR BMI->CRC MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "height_prostate_cancer_MR",
+    "exposure": "Height (genetic)",
+    "outcome": "Prostate cancer",
+    "domain": "cancer",
+    "expected": "transport",
+    "source_papers": ["Davies 2015 Cancer Causes Control", "Bonilla 2021"],
+    "strata": [
+      {"name": "EUR_PRACTICAL", "beta": 0.09, "se": 0.02, "source": "Davies 2015, height MR->prostate cancer EUR (log-OR per 10cm)"},
+      {"name": "EUR_UKB", "beta": 0.08, "se": 0.03, "source": "UKB height->prostate cancer MR", "approximate": true},
+      {"name": "EAS", "beta": 0.10, "se": 0.04, "source": "EAS height->prostate cancer MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "smoking_bladder_cancer_MR",
+    "exposure": "Smoking (genetic)",
+    "outcome": "Bladder cancer",
+    "domain": "cancer",
+    "expected": "transport",
+    "source_papers": ["Masaoud 2020", "Larsson 2020"],
+    "strata": [
+      {"name": "EUR_meta", "beta": 0.42, "se": 0.06, "source": "Masaoud 2020, smoking MR->bladder cancer EUR"},
+      {"name": "EUR_UKB", "beta": 0.38, "se": 0.07, "source": "UKB smoking->bladder cancer MR", "approximate": true},
+      {"name": "multiethnic", "beta": 0.45, "se": 0.10, "source": "Multi-ethnic smoking->bladder cancer", "approximate": true}
+    ]
+  },
+  {
+    "id": "BMI_endometrial_cancer_MR",
+    "exposure": "BMI (genetic)",
+    "outcome": "Endometrial cancer",
+    "domain": "cancer",
+    "expected": "transport",
+    "source_papers": ["Painter 2016 Int J Epidemiol", "O'Mara 2019"],
+    "strata": [
+      {"name": "EUR_ECAC", "beta": 0.55, "se": 0.06, "source": "Painter 2016, BMI MR->endometrial cancer EUR (strong effect)"},
+      {"name": "EUR_UKB", "beta": 0.50, "se": 0.07, "source": "UKB BMI->endometrial cancer MR", "approximate": true},
+      {"name": "EAS", "beta": 0.48, "se": 0.10, "source": "EAS BMI->endometrial cancer MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "BMI_depression_MR",
+    "exposure": "BMI (genetic)",
+    "outcome": "Major depressive disorder",
+    "domain": "psychiatric",
+    "expected": "non-transport",
+    "source_papers": ["Tyrrell 2019 Mol Psychiatry", "Mulugeta 2019"],
+    "strata": [
+      {"name": "EUR_PGC", "beta": 0.12, "se": 0.03, "source": "Tyrrell 2019, BMI MR->depression EUR (log-OR per SD)"},
+      {"name": "EUR_UKB", "beta": 0.10, "se": 0.03, "source": "UKB BMI->depression MR", "approximate": true},
+      {"name": "EAS", "beta": 0.02, "se": 0.06, "source": "EAS BMI->depression MR (attenuated/null)", "approximate": true},
+      {"name": "AFR", "beta": 0.05, "se": 0.08, "source": "AFR BMI->depression MR (weaker)", "approximate": true}
+    ]
+  },
+  {
+    "id": "cannabis_schizophrenia_MR",
+    "exposure": "Cannabis use (genetic)",
+    "outcome": "Schizophrenia",
+    "domain": "psychiatric",
+    "expected": "transport",
+    "source_papers": ["Vaucher 2018 Mol Psychiatry", "Gage 2017 Psychol Med"],
+    "strata": [
+      {"name": "EUR_PGC", "beta": 0.10, "se": 0.03, "source": "Vaucher 2018, cannabis MR->schizophrenia EUR (log-OR per doubling)"},
+      {"name": "EUR_UKB", "beta": 0.08, "se": 0.04, "source": "Gage 2017, cannabis->schizophrenia MR (UKB instruments)", "approximate": true},
+      {"name": "EUR_replication", "beta": 0.12, "se": 0.05, "source": "EUR replication sample", "approximate": true}
+    ]
+  },
+  {
+    "id": "smoking_schizophrenia_MR",
+    "exposure": "Smoking (genetic)",
+    "outcome": "Schizophrenia",
+    "domain": "psychiatric",
+    "expected": "transport",
+    "source_papers": ["Wootton 2020 Psychol Med", "Gage 2017"],
+    "strata": [
+      {"name": "EUR_PGC2", "beta": 0.14, "se": 0.04, "source": "Wootton 2020, smoking MR->schizophrenia EUR"},
+      {"name": "EUR_UKB", "beta": 0.11, "se": 0.05, "source": "UKB smoking->schizophrenia MR", "approximate": true},
+      {"name": "EUR_replication", "beta": 0.16, "se": 0.06, "source": "EUR PGC replication", "approximate": true}
+    ]
+  },
+  {
+    "id": "education_schizophrenia_MR",
+    "exposure": "Educational attainment (genetic)",
+    "outcome": "Schizophrenia",
+    "domain": "psychiatric",
+    "expected": "non-transport",
+    "source_papers": ["Okbay 2016 Nature", "Lam 2019 Nat Genet"],
+    "strata": [
+      {"name": "EUR_PGC", "beta": 0.05, "se": 0.03, "source": "Okbay 2016, education MR->SCZ EUR (positive, confounded)"},
+      {"name": "EUR_UKB", "beta": 0.08, "se": 0.03, "source": "UKB education->SCZ MR (positive)", "approximate": true},
+      {"name": "EAS", "beta": -0.04, "se": 0.06, "source": "Lam 2019, EAS education->SCZ MR (reversed direction)", "approximate": true},
+      {"name": "AFR", "beta": 0.01, "se": 0.08, "source": "AFR education->SCZ MR (null)", "approximate": true}
+    ]
+  },
+  {
+    "id": "CRP_depression_MR",
+    "exposure": "CRP (genetic)",
+    "outcome": "Major depressive disorder",
+    "domain": "psychiatric",
+    "expected": "transport",
+    "source_papers": ["Khandaker 2020 Mol Psychiatry", "Ye 2021"],
+    "strata": [
+      {"name": "EUR_PGC", "beta": 0.05, "se": 0.04, "source": "Khandaker 2020, CRP MR->depression EUR (weak positive)"},
+      {"name": "EUR_UKB", "beta": 0.04, "se": 0.03, "source": "UKB CRP->depression MR", "approximate": true},
+      {"name": "EUR_FinnGen", "beta": 0.06, "se": 0.05, "source": "FinnGen CRP->depression MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "BMI_bipolar_MR",
+    "exposure": "BMI (genetic)",
+    "outcome": "Bipolar disorder",
+    "domain": "psychiatric",
+    "expected": "transport",
+    "source_papers": ["Bai 2020 Transl Psychiatry"],
+    "strata": [
+      {"name": "EUR_PGC", "beta": -0.02, "se": 0.04, "source": "Bai 2020, BMI MR->bipolar EUR (null)"},
+      {"name": "EUR_UKB", "beta": 0.01, "se": 0.05, "source": "UKB BMI->bipolar MR (null)", "approximate": true},
+      {"name": "EUR_FinnGen", "beta": -0.03, "se": 0.06, "source": "FinnGen BMI->bipolar MR (null)", "approximate": true}
+    ]
+  },
+  {
+    "id": "vitD_AD_MR",
+    "exposure": "Vitamin D (genetic)",
+    "outcome": "Alzheimer's disease risk",
+    "domain": "AD",
+    "expected": "transport",
+    "source_papers": ["Mokry 2016 Neurology", "Larsson 2017"],
+    "strata": [
+      {"name": "EUR_Kunkle", "beta": -0.08, "se": 0.04, "source": "Mokry 2016, vitD MR->AD EUR (weak protective)"},
+      {"name": "EUR_Bellenguez", "beta": -0.06, "se": 0.035, "source": "Updated vitD MR with Bellenguez 2022", "approximate": true},
+      {"name": "EUR_UKB_proxy", "beta": -0.10, "se": 0.05, "source": "UKB AD-by-proxy outcome", "approximate": true}
+    ]
+  },
+  {
+    "id": "smoking_AD_MR",
+    "exposure": "Smoking (genetic)",
+    "outcome": "Alzheimer's disease risk",
+    "domain": "AD",
+    "expected": "transport",
+    "source_papers": ["Larsson 2017 Ann Neurol"],
+    "strata": [
+      {"name": "EUR_Kunkle", "beta": -0.06, "se": 0.05, "source": "Larsson 2017, smoking MR->AD EUR (weak protective/null)"},
+      {"name": "EUR_Bellenguez", "beta": -0.04, "se": 0.04, "source": "Smoking MR with Bellenguez 2022 outcome", "approximate": true},
+      {"name": "EUR_UKB_proxy", "beta": -0.08, "se": 0.06, "source": "UKB AD-by-proxy outcome", "approximate": true}
+    ]
+  },
+  {
+    "id": "SBP_AD_MR",
+    "exposure": "Systolic blood pressure (genetic)",
+    "outcome": "Alzheimer's disease risk",
+    "domain": "AD",
+    "expected": "non-transport",
+    "source_papers": ["Georgakis 2020 Neurology", "Andrews 2020"],
+    "strata": [
+      {"name": "EUR_midlife", "beta": 0.10, "se": 0.04, "source": "Georgakis 2020, SBP MR->AD EUR midlife (risk)"},
+      {"name": "EUR_latelife", "beta": -0.05, "se": 0.05, "source": "Andrews 2020, SBP MR->AD EUR late-life (protective/null)"},
+      {"name": "EAS", "beta": 0.15, "se": 0.08, "source": "EAS SBP->AD MR (stronger midlife effect)", "approximate": true},
+      {"name": "AFR", "beta": 0.02, "se": 0.10, "source": "AFR SBP->AD MR (attenuated)", "approximate": true}
+    ]
+  },
+  {
+    "id": "physical_activity_AD_MR",
+    "exposure": "Physical activity (genetic)",
+    "outcome": "Alzheimer's disease risk",
+    "domain": "AD",
+    "expected": "transport",
+    "source_papers": ["Choi 2020 JAMA Neurol"],
+    "strata": [
+      {"name": "EUR_Kunkle", "beta": -0.13, "se": 0.06, "source": "Choi 2020, PA MR->AD EUR (protective)"},
+      {"name": "EUR_Bellenguez", "beta": -0.10, "se": 0.05, "source": "Updated PA MR with Bellenguez 2022", "approximate": true},
+      {"name": "EUR_UKB_proxy", "beta": -0.15, "se": 0.07, "source": "UKB AD-by-proxy outcome", "approximate": true}
+    ]
+  },
+  {
+    "id": "sleep_duration_AD_MR",
+    "exposure": "Sleep duration (genetic)",
+    "outcome": "Alzheimer's disease risk",
+    "domain": "AD",
+    "expected": "transport",
+    "source_papers": ["Henry 2019 Sleep", "Dashti 2019"],
+    "strata": [
+      {"name": "EUR_Kunkle", "beta": 0.04, "se": 0.05, "source": "Henry 2019, sleep MR->AD EUR (near null)"},
+      {"name": "EUR_Bellenguez", "beta": 0.02, "se": 0.04, "source": "Updated sleep MR with Bellenguez 2022", "approximate": true},
+      {"name": "EUR_FinnGen", "beta": 0.05, "se": 0.06, "source": "FinnGen sleep->AD MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "IL6_AD_MR",
+    "exposure": "IL-6 signaling (genetic)",
+    "outcome": "Alzheimer's disease risk",
+    "domain": "AD",
+    "expected": "transport",
+    "source_papers": ["Rasmussen 2019 Brain", "Su 2022"],
+    "strata": [
+      {"name": "EUR_Kunkle", "beta": -0.03, "se": 0.04, "source": "Rasmussen 2019, IL-6R MR->AD EUR (weak protective/null)"},
+      {"name": "EUR_Bellenguez", "beta": -0.01, "se": 0.035, "source": "IL-6R MR with Bellenguez 2022", "approximate": true},
+      {"name": "EUR_UKB_proxy", "beta": -0.04, "se": 0.05, "source": "UKB AD-by-proxy outcome", "approximate": true}
+    ]
+  },
+  {
+    "id": "APOE2_AD_protective",
+    "exposure": "APOE e2 allele",
+    "outcome": "Alzheimer's disease risk",
+    "domain": "AD",
+    "expected": "non-transport",
+    "source_papers": ["Reiman 2020 Nat Commun", "Blue 2019"],
+    "strata": [
+      {"name": "EUR", "beta": -0.70, "se": 0.06, "source": "Reiman 2020, APOE2 protective effect EUR (log-OR)"},
+      {"name": "AFR", "beta": -0.35, "se": 0.15, "source": "Blue 2019, APOE2 protective effect AFR (attenuated)", "approximate": true},
+      {"name": "EAS", "beta": -0.60, "se": 0.12, "source": "EAS APOE2 protective effect", "approximate": true},
+      {"name": "HISP", "beta": -0.45, "se": 0.18, "source": "Hispanic APOE2 protective effect", "approximate": true}
+    ]
+  },
+  {
+    "id": "LDL_stroke_MR",
+    "exposure": "LDL cholesterol (genetic)",
+    "outcome": "Ischemic stroke",
+    "domain": "cardiometabolic",
+    "expected": "transport",
+    "source_papers": ["Georgakis 2020 Neurology", "Malik 2018"],
+    "strata": [
+      {"name": "EUR_MEGASTROKE", "beta": 0.12, "se": 0.03, "source": "Georgakis 2020, LDL MR->ischemic stroke EUR"},
+      {"name": "EUR_UKB", "beta": 0.10, "se": 0.04, "source": "UKB LDL->stroke MR", "approximate": true},
+      {"name": "EAS", "beta": 0.14, "se": 0.05, "source": "EAS LDL->ischemic stroke MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "urate_gout_MR",
+    "exposure": "Serum urate (genetic)",
+    "outcome": "Gout",
+    "domain": "cardiometabolic",
+    "expected": "non-transport",
+    "source_papers": ["Tin 2019 Nat Genet", "Nakatochi 2019"],
+    "strata": [
+      {"name": "EUR", "beta": 0.80, "se": 0.05, "source": "Tin 2019, urate MR->gout EUR (log-OR per SD)"},
+      {"name": "EAS", "beta": 1.10, "se": 0.07, "source": "Nakatochi 2019, EAS urate->gout (stronger)", "approximate": true},
+      {"name": "AFR", "beta": 0.60, "se": 0.12, "source": "AFR urate->gout MR (attenuated)", "approximate": true},
+      {"name": "Pacific_Islander", "beta": 1.25, "se": 0.15, "source": "Pacific Islander urate->gout (very high prevalence)", "approximate": true}
+    ]
+  },
+  {
+    "id": "IL6R_CAD_MR",
+    "exposure": "IL-6R signaling (genetic)",
+    "outcome": "Coronary artery disease",
+    "domain": "cardiometabolic",
+    "expected": "transport",
+    "source_papers": ["Swerdlow 2012 Lancet", "Rosa 2021"],
+    "strata": [
+      {"name": "EUR_CARDIoGRAM", "beta": -0.05, "se": 0.02, "source": "Swerdlow 2012, IL-6R MR->CAD EUR (protective)"},
+      {"name": "EUR_UKB", "beta": -0.04, "se": 0.02, "source": "UKB IL-6R->CAD MR", "approximate": true},
+      {"name": "multiethnic", "beta": -0.06, "se": 0.03, "source": "Multi-ethnic IL-6R->CAD MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "alcohol_liver_cirrhosis_MR",
+    "exposure": "Alcohol consumption (genetic)",
+    "outcome": "Liver cirrhosis",
+    "domain": "cardiometabolic",
+    "expected": "non-transport",
+    "source_papers": ["Biddinger 2022 JAMA Netw Open", "Millwood 2019"],
+    "strata": [
+      {"name": "EUR", "beta": 0.45, "se": 0.08, "source": "Biddinger 2022, alcohol MR->cirrhosis EUR"},
+      {"name": "EAS_CKB", "beta": 0.80, "se": 0.09, "source": "Millwood 2019, ADH1B MR EAS->cirrhosis (stronger due to flush allele)"},
+      {"name": "EUR_FinnGen", "beta": 0.50, "se": 0.10, "source": "FinnGen alcohol->cirrhosis MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "smoking_COPD_MR",
+    "exposure": "Smoking (genetic)",
+    "outcome": "COPD",
+    "domain": "cancer",
+    "expected": "transport",
+    "source_papers": ["Wootton 2020", "Shrine 2019 Nat Genet"],
+    "strata": [
+      {"name": "EUR_meta", "beta": 0.50, "se": 0.05, "source": "Wootton 2020, smoking MR->COPD EUR"},
+      {"name": "EUR_UKB", "beta": 0.48, "se": 0.06, "source": "UKB smoking->COPD MR", "approximate": true},
+      {"name": "EAS", "beta": 0.53, "se": 0.08, "source": "EAS smoking->COPD MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "BMI_kidney_cancer_MR",
+    "exposure": "BMI (genetic)",
+    "outcome": "Renal cell carcinoma",
+    "domain": "cancer",
+    "expected": "transport",
+    "source_papers": ["Shu 2022", "Johansson 2019 PLoS Med"],
+    "strata": [
+      {"name": "EUR_IARC", "beta": 0.30, "se": 0.06, "source": "Johansson 2019, BMI MR->RCC EUR"},
+      {"name": "EUR_UKB", "beta": 0.27, "se": 0.07, "source": "UKB BMI->RCC MR", "approximate": true},
+      {"name": "multiethnic", "beta": 0.32, "se": 0.09, "source": "Multi-ethnic BMI->RCC MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "insulin_resistance_pancreatic_cancer_MR",
+    "exposure": "Fasting insulin (genetic)",
+    "outcome": "Pancreatic cancer",
+    "domain": "cancer",
+    "expected": "non-transport",
+    "source_papers": ["Carreras-Torres 2017 JNCI", "Yuan 2020"],
+    "strata": [
+      {"name": "EUR_PanScan", "beta": 0.45, "se": 0.10, "source": "Carreras-Torres 2017, insulin MR->pancreatic cancer EUR"},
+      {"name": "EUR_UKB", "beta": 0.38, "se": 0.12, "source": "UKB insulin->pancreatic cancer MR", "approximate": true},
+      {"name": "EAS", "beta": 0.18, "se": 0.15, "source": "EAS insulin->pancreatic cancer MR (attenuated)", "approximate": true},
+      {"name": "AFR", "beta": 0.55, "se": 0.18, "source": "AFR insulin->pancreatic cancer MR (stronger)", "approximate": true}
+    ]
+  },
+  {
+    "id": "telomere_length_cancer_MR",
+    "exposure": "Telomere length (genetic)",
+    "outcome": "Overall cancer risk",
+    "domain": "cancer",
+    "expected": "transport",
+    "source_papers": ["Haycock 2017 BMJ", "Telomeres MC 2017"],
+    "strata": [
+      {"name": "EUR_meta", "beta": 0.15, "se": 0.03, "source": "Haycock 2017, telomere MR->cancer EUR (log-OR per SD)"},
+      {"name": "EUR_UKB", "beta": 0.13, "se": 0.04, "source": "UKB telomere->cancer MR", "approximate": true},
+      {"name": "EAS", "beta": 0.16, "se": 0.05, "source": "EAS telomere->cancer MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "IL6_MS_MR",
+    "exposure": "IL-6 signaling (genetic)",
+    "outcome": "MS risk",
+    "domain": "MS",
+    "expected": "transport",
+    "source_papers": ["Swerdlow 2012 Lancet", "Wills 2023"],
+    "strata": [
+      {"name": "EUR_IMSGC", "beta": -0.04, "se": 0.05, "source": "Wills 2023, IL-6R MR->MS EUR (weak protective/null)"},
+      {"name": "EUR_UKB", "beta": -0.02, "se": 0.06, "source": "UKB IL-6R->MS MR", "approximate": true},
+      {"name": "EUR_Scandinavian", "beta": -0.05, "se": 0.07, "source": "Scandinavian IL-6R->MS MR", "approximate": true}
+    ]
+  },
+  {
+    "id": "gut_microbiome_MS",
+    "exposure": "Gut microbiome composition (genetic)",
+    "outcome": "MS risk",
+    "domain": "MS",
+    "expected": "non-transport",
+    "source_papers": ["iMSMS 2022 Cell", "Cekanaviciute 2017"],
+    "strata": [
+      {"name": "EUR_IMSGC", "beta": 0.08, "se": 0.04, "source": "iMSMS 2022 Cell, microbiome->MS EUR"},
+      {"name": "EUR_US", "beta": 0.12, "se": 0.05, "source": "Cekanaviciute 2017, US MS cohort", "approximate": true},
+      {"name": "EAS_Japan", "beta": -0.02, "se": 0.08, "source": "Japanese microbiome->MS (different taxa implicated)", "approximate": true},
+      {"name": "AFR", "beta": 0.15, "se": 0.10, "source": "AFR microbiome->MS (sparse data)", "approximate": true}
+    ]
+  },
+  {
+    "id": "BMI_asthma_MR",
+    "exposure": "BMI (genetic)",
+    "outcome": "Asthma",
+    "domain": "cardiometabolic",
+    "expected": "transport",
+    "source_papers": ["Skaaby 2014 JACI", "Zhu 2020"],
+    "strata": [
+      {"name": "EUR_GABRIEL", "beta": 0.22, "se": 0.04, "source": "Skaaby 2014, BMI MR->asthma EUR"},
+      {"name": "EUR_UKB", "beta": 0.20, "se": 0.04, "source": "UKB BMI->asthma MR", "approximate": true},
+      {"name": "EAS", "beta": 0.25, "se": 0.06, "source": "EAS BMI->asthma MR", "approximate": true},
+      {"name": "AFR", "beta": 0.18, "se": 0.08, "source": "AFR BMI->asthma MR", "approximate": true}
+    ]
+  }
+]

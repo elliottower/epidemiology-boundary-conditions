@@ -1,0 +1,242 @@
+[
+  {
+    "graph": "asia",
+    "n_nodes": 8,
+    "n_edges": 8,
+    "feature": "Forman-Ricci",
+    "auroc_mean": 0.2701404761904762,
+    "auroc_se": 0.008018734491842467,
+    "best_alpha": "alpha=0.05",
+    "n_valid": 50
+  },
+  {
+    "graph": "asia",
+    "n_nodes": 8,
+    "n_edges": 8,
+    "feature": "Aug. Forman",
+    "auroc_mean": 0.26718333333333333,
+    "auroc_se": 0.008290293274971277,
+    "best_alpha": "alpha=0.01",
+    "n_valid": 50
+  },
+  {
+    "graph": "asia",
+    "n_nodes": 8,
+    "n_edges": 8,
+    "feature": "Jaccard",
+    "auroc_mean": 0.5045333333333333,
+    "auroc_se": 0.003519637169508905,
+    "best_alpha": "alpha=0.01",
+    "n_valid": 50
+  },
+  {
+    "graph": "asia",
+    "n_nodes": 8,
+    "n_edges": 8,
+    "feature": "Betweenness",
+    "auroc_mean": 0.640818253968254,
+    "auroc_se": 0.010441731649259666,
+    "best_alpha": "alpha=0.05",
+    "n_valid": 50
+  },
+  {
+    "graph": "asia",
+    "n_nodes": 8,
+    "n_edges": 8,
+    "feature": "|Partial Corr|",
+    "auroc_mean": 0.6096166666666667,
+    "auroc_se": 0.028293391314289134,
+    "best_alpha": "alpha=0.01",
+    "n_valid": 50
+  },
+  {
+    "graph": "asia",
+    "n_nodes": 8,
+    "n_edges": 8,
+    "feature": "Avg Clustering",
+    "auroc_mean": 0.5016666666666667,
+    "auroc_se": 0.0016666666666666674,
+    "best_alpha": "alpha=0.01",
+    "n_valid": 50
+  },
+  {
+    "graph": "sachs",
+    "n_nodes": 11,
+    "n_edges": 17,
+    "feature": "Forman-Ricci",
+    "auroc_mean": 0.38583750584538395,
+    "auroc_se": 0.020487921557430948,
+    "best_alpha": "alpha=0.05",
+    "n_valid": 50
+  },
+  {
+    "graph": "sachs",
+    "n_nodes": 11,
+    "n_edges": 17,
+    "feature": "Aug. Forman",
+    "auroc_mean": 0.42897418216315275,
+    "auroc_se": 0.017276854081193564,
+    "best_alpha": "alpha=0.05",
+    "n_valid": 50
+  },
+  {
+    "graph": "sachs",
+    "n_nodes": 11,
+    "n_edges": 17,
+    "feature": "Jaccard",
+    "auroc_mean": 0.530007469790558,
+    "auroc_se": 0.013454673905807237,
+    "best_alpha": "alpha=0.001",
+    "n_valid": 50
+  },
+  {
+    "graph": "sachs",
+    "n_nodes": 11,
+    "n_edges": 17,
+    "feature": "Betweenness",
+    "auroc_mean": 0.6391540907505192,
+    "auroc_se": 0.022333439639480826,
+    "best_alpha": "alpha=0.01",
+    "n_valid": 50
+  },
+  {
+    "graph": "sachs",
+    "n_nodes": 11,
+    "n_edges": 17,
+    "feature": "|Partial Corr|",
+    "auroc_mean": 0.4251087530350135,
+    "auroc_se": 0.020212427689173442,
+    "best_alpha": "alpha=0.05",
+    "n_valid": 50
+  },
+  {
+    "graph": "sachs",
+    "n_nodes": 11,
+    "n_edges": 17,
+    "feature": "Avg Clustering",
+    "auroc_mean": 0.5551998316226258,
+    "auroc_se": 0.01685517463290774,
+    "best_alpha": "alpha=0.001",
+    "n_valid": 50
+  },
+  {
+    "graph": "insurance",
+    "n_nodes": 27,
+    "n_edges": 52,
+    "feature": "Forman-Ricci",
+    "auroc_mean": 0.38224375164559876,
+    "auroc_se": 0.013580791052281042,
+    "best_alpha": "alpha=0.001",
+    "n_valid": 50
+  },
+  {
+    "graph": "insurance",
+    "n_nodes": 27,
+    "n_edges": 52,
+    "feature": "Aug. Forman",
+    "auroc_mean": 0.4540108849686634,
+    "auroc_se": 0.01598074321629856,
+    "best_alpha": "alpha=0.05",
+    "n_valid": 50
+  },
+  {
+    "graph": "insurance",
+    "n_nodes": 27,
+    "n_edges": 52,
+    "feature": "Jaccard",
+    "auroc_mean": 0.557939485339727,
+    "auroc_se": 0.013391400584131604,
+    "best_alpha": "alpha=0.05",
+    "n_valid": 50
+  },
+  {
+    "graph": "insurance",
+    "n_nodes": 27,
+    "n_edges": 52,
+    "feature": "Betweenness",
+    "auroc_mean": 0.6001161002214852,
+    "auroc_se": 0.01890357939938268,
+    "best_alpha": "alpha=0.01",
+    "n_valid": 50
+  },
+  {
+    "graph": "insurance",
+    "n_nodes": 27,
+    "n_edges": 52,
+    "feature": "|Partial Corr|",
+    "auroc_mean": 0.41038061955681326,
+    "auroc_se": 0.013479045140967835,
+    "best_alpha": "alpha=0.05",
+    "n_valid": 50
+  },
+  {
+    "graph": "insurance",
+    "n_nodes": 27,
+    "n_edges": 52,
+    "feature": "Avg Clustering",
+    "auroc_mean": 0.5548677096555348,
+    "auroc_se": 0.014533219577212061,
+    "best_alpha": "alpha=0.05",
+    "n_valid": 50
+  },
+  {
+    "graph": "alarm",
+    "n_nodes": 37,
+    "n_edges": 46,
+    "feature": "Forman-Ricci",
+    "auroc_mean": 0.3791598091705012,
+    "auroc_se": 0.02064907522096789,
+    "best_alpha": "alpha=0.01",
+    "n_valid": 50
+  },
+  {
+    "graph": "alarm",
+    "n_nodes": 37,
+    "n_edges": 46,
+    "feature": "Aug. Forman",
+    "auroc_mean": 0.35147711162757966,
+    "auroc_se": 0.02557853001639441,
+    "best_alpha": "alpha=0.01",
+    "n_valid": 50
+  },
+  {
+    "graph": "alarm",
+    "n_nodes": 37,
+    "n_edges": 46,
+    "feature": "Jaccard",
+    "auroc_mean": 0.49752082046576845,
+    "auroc_se": 0.01210776361923078,
+    "best_alpha": "alpha=0.01",
+    "n_valid": 50
+  },
+  {
+    "graph": "alarm",
+    "n_nodes": 37,
+    "n_edges": 46,
+    "feature": "Betweenness",
+    "auroc_mean": 0.8203124063673635,
+    "auroc_se": 0.022650745036989817,
+    "best_alpha": "alpha=0.001",
+    "n_valid": 50
+  },
+  {
+    "graph": "alarm",
+    "n_nodes": 37,
+    "n_edges": 46,
+    "feature": "|Partial Corr|",
+    "auroc_mean": 0.6013256673145095,
+    "auroc_se": 0.0390006587286239,
+    "best_alpha": "alpha=0.05",
+    "n_valid": 50
+  },
+  {
+    "graph": "alarm",
+    "n_nodes": 37,
+    "n_edges": 46,
+    "feature": "Avg Clustering",
+    "auroc_mean": 0.728439330355083,
+    "auroc_se": 0.022830677667799823,
+    "best_alpha": "alpha=0.05",
+    "n_valid": 50
+  }
+]

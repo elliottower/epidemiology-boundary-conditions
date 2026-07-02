@@ -1,0 +1,150 @@
+{
+  "timestamp": "2026-07-02T11:42:29.009126",
+  "source": "ABIDE I (Autism Brain Imaging Data Exchange)",
+  "atlas": "Desikan-Killiany (FreeSurfer aparc)",
+  "measure": "cortical_thickness_mm",
+  "hemispheres": [
+    "lh"
+  ],
+  "n_regions": 34,
+  "regions": [
+    "bankssts",
+    "caudalanteriorcingulate",
+    "caudalmiddlefrontal",
+    "cuneus",
+    "entorhinal",
+    "fusiform",
+    "inferiorparietal",
+    "inferiortemporal",
+    "isthmuscingulate",
+    "lateraloccipital",
+    "lateralorbitofrontal",
+    "lingual",
+    "medialorbitofrontal",
+    "middletemporal",
+    "parahippocampal",
+    "paracentral",
+    "parsopercularis",
+    "parsorbitalis",
+    "parstriangularis",
+    "pericalcarine",
+    "postcentral",
+    "posteriorcingulate",
+    "precentral",
+    "precuneus",
+    "rostralanteriorcingulate",
+    "rostralmiddlefrontal",
+    "superiorfrontal",
+    "superiorparietal",
+    "superiortemporal",
+    "supramarginal",
+    "frontalpole",
+    "temporalpole",
+    "transversetemporal",
+    "insula"
+  ],
+  "n_sites": 20,
+  "total_subjects": 1031,
+  "sites": {
+    "CALTECH": {
+      "n_subjects": 37,
+      "n_regions": 34,
+      "file": "site_CALTECH.npy"
+    },
+    "CMU": {
+      "n_subjects": 27,
+      "n_regions": 34,
+      "file": "site_CMU.npy"
+    },
+    "KKI": {
+      "n_subjects": 48,
+      "n_regions": 34,
+      "file": "site_KKI.npy"
+    },
+    "LEUVEN_1": {
+      "n_subjects": 29,
+      "n_regions": 34,
+      "file": "site_LEUVEN_1.npy"
+    },
+    "LEUVEN_2": {
+      "n_subjects": 34,
+      "n_regions": 34,
+      "file": "site_LEUVEN_2.npy"
+    },
+    "MAX_MUN": {
+      "n_subjects": 52,
+      "n_regions": 34,
+      "file": "site_MAX_MUN.npy"
+    },
+    "NYU": {
+      "n_subjects": 175,
+      "n_regions": 34,
+      "file": "site_NYU.npy"
+    },
+    "OHSU": {
+      "n_subjects": 26,
+      "n_regions": 34,
+      "file": "site_OHSU.npy"
+    },
+    "OLIN": {
+      "n_subjects": 34,
+      "n_regions": 34,
+      "file": "site_OLIN.npy"
+    },
+    "PITT": {
+      "n_subjects": 56,
+      "n_regions": 34,
+      "file": "site_PITT.npy"
+    },
+    "SBL": {
+      "n_subjects": 30,
+      "n_regions": 34,
+      "file": "site_SBL.npy"
+    },
+    "SDSU": {
+      "n_subjects": 36,
+      "n_regions": 34,
+      "file": "site_SDSU.npy"
+    },
+    "STANFORD": {
+      "n_subjects": 39,
+      "n_regions": 34,
+      "file": "site_STANFORD.npy"
+    },
+    "TRINITY": {
+      "n_subjects": 47,
+      "n_regions": 34,
+      "file": "site_TRINITY.npy"
+    },
+    "UCLA_1": {
+      "n_subjects": 72,
+      "n_regions": 34,
+      "file": "site_UCLA_1.npy"
+    },
+    "UCLA_2": {
+      "n_subjects": 25,
+      "n_regions": 34,
+      "file": "site_UCLA_2.npy"
+    },
+    "UM_1": {
+      "n_subjects": 103,
+      "n_regions": 34,
+      "file": "site_UM_1.npy"
+    },
+    "UM_2": {
+      "n_subjects": 34,
+      "n_regions": 34,
+      "file": "site_UM_2.npy"
+    },
+    "USM": {
+      "n_subjects": 71,
+      "n_regions": 34,
+      "file": "site_USM.npy"
+    },
+    "YALE": {
+      "n_subjects": 56,
+      "n_regions": 34,
+      "file": "site_YALE.npy"
+    }
+  }
+}

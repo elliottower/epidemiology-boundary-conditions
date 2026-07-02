@@ -1,0 +1,10 @@
+{
+  "n_sites": 50,
+  "d": 34,
+  "k": 3,
+  "n_confounded": 25,
+  "confound_strength": 0.2,
+  "site_bias_std": 0.05,
+  "scanner_scale_std": 0.03,
+  "seed": 42
+}
