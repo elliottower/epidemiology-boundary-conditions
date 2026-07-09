@@ -1,0 +1,26 @@
+{
+  "title": "Boundary Conditions for Geometric Methods in Clinical Epidemiology",
+  "upload_type": "software",
+  "description": "When does geometry help causal inference? Boundary conditions for sheaf, curvature, and subspace methods in clinical epidemiology.",
+  "creators": [
+    {
+      "name": "Tower, Elliot",
+      "orcid": "0000-0001-7004-8884"
+    }
+  ],
+  "license": "MIT",
+  "keywords": [
+    "epidemiology",
+    "boundary conditions",
+    "sheaf cohomology",
+    "curvature",
+    "causal inference"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/elliottower/epidemiology-boundary-conditions",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}
