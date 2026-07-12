@@ -273,12 +273,223 @@ def plot_power_scatter(results: list, output_dir: Path):
     log.info("Saved power vs Q plot")
 
 
+def dersimonian_laird(betas: np.ndarray, ses: np.ndarray):
+    """DerSimonian-Laird random-effects meta-analysis.
+
+    Returns dict with beta_re, se_re, tau2, Q, I2.
+    """
+    w = 1.0 / (ses ** 2)
+    beta_fe = np.sum(w * betas) / np.sum(w)
+    k = len(betas)
+    df = k - 1
+    Q = float(np.sum(w * (betas - beta_fe) ** 2))
+    C = np.sum(w) - np.sum(w ** 2) / np.sum(w)
+    tau2 = float(max(0.0, (Q - df) / C)) if C > 0 else 0.0
+    I2 = float(max(0.0, (Q - df) / Q)) if Q > 0 else 0.0
+
+    w_re = 1.0 / (ses ** 2 + tau2)
+    beta_re = float(np.sum(w_re * betas) / np.sum(w_re))
+    se_re = float(1.0 / np.sqrt(np.sum(w_re)))
+
+    return {
+        "beta_fe": float(beta_fe),
+        "beta_re": beta_re,
+        "se_re": se_re,
+        "tau2": tau2,
+        "Q": Q,
+        "I2": I2,
+        "k": k,
+    }
+
+
+def sensitivity_exclude_approximate(pairs: list, alpha: float):
+    """Report accuracy separately for exact-only vs approximate-containing pairs."""
+    exact = [p for p in pairs if not any(s.get("approximate", False) for s in p["strata"])]
+    approx = [p for p in pairs if any(s.get("approximate", False) for s in p["strata"])]
+
+    exact_results = run_pipeline(exact, alpha) if exact else []
+    approx_results = run_pipeline(approx, alpha) if approx else []
+
+    exact_metrics = evaluate_accuracy(exact_results) if exact_results else None
+    approx_metrics = evaluate_accuracy(approx_results) if approx_results else None
+
+    return {
+        "n_exact": len(exact),
+        "n_approximate": len(approx),
+        "exact_ids": [p["id"] for p in exact],
+        "exact_metrics": exact_metrics,
+        "approximate_metrics": approx_metrics,
+    }
+
+
+def sensitivity_leave_one_out(pairs: list, alpha: float):
+    """For each pair, drop each stratum and check if classification changes."""
+    loo_results = []
+    for pair in tqdm(pairs, desc="Leave-one-out"):
+        strata = pair["strata"]
+        if len(strata) <= 2:
+            loo_results.append({
+                "id": pair["id"],
+                "k": len(strata),
+                "stable": True,
+                "note": "only 2 strata, LOO gives k=1 (untestable)",
+            })
+            continue
+
+        betas_full = np.array([s["beta"] for s in strata])
+        ses_full = np.array([s["se"] for s in strata])
+        full_stats = compute_cochran_q(betas_full, ses_full)
+        full_verdict = classify_pair(full_stats["p"], alpha)
+
+        dropped = []
+        for i in range(len(strata)):
+            betas_loo = np.delete(betas_full, i)
+            ses_loo = np.delete(ses_full, i)
+            loo_stats = compute_cochran_q(betas_loo, ses_loo)
+            loo_verdict = classify_pair(loo_stats["p"], alpha)
+            dropped.append({
+                "dropped_stratum": strata[i]["name"],
+                "Q_loo": loo_stats["Q"],
+                "p_loo": loo_stats["p"],
+                "verdict_loo": loo_verdict,
+                "changed": loo_verdict != full_verdict,
+            })
+
+        n_changed = sum(1 for d in dropped if d["changed"])
+        loo_results.append({
+            "id": pair["id"],
+            "expected": pair["expected"],
+            "k": len(strata),
+            "full_Q": full_stats["Q"],
+            "full_p": full_stats["p"],
+            "full_verdict": full_verdict,
+            "n_changed": n_changed,
+            "stable": n_changed == 0,
+            "dropped": dropped,
+        })
+
+    n_stable = sum(1 for r in loo_results if r["stable"])
+    return {
+        "n_pairs": len(pairs),
+        "n_stable": n_stable,
+        "pct_stable": n_stable / len(pairs) if pairs else 0.0,
+        "per_pair": loo_results,
+    }
+
+
+def sensitivity_random_effects(pairs: list, alpha: float):
+    """Compare fixed-effects and random-effects pooled estimates."""
+    re_results = []
+    for pair in tqdm(pairs, desc="Random-effects comparison"):
+        betas = np.array([s["beta"] for s in pair["strata"]])
+        ses = np.array([s["se"] for s in pair["strata"]])
+        re = dersimonian_laird(betas, ses)
+        fe_stats = compute_cochran_q(betas, ses)
+        fe_verdict = classify_pair(fe_stats["p"], alpha)
+
+        se_ratio = re["se_re"] / (1.0 / np.sqrt(np.sum(1.0 / ses ** 2))) if re["tau2"] > 0 else 1.0
+
+        re_results.append({
+            "id": pair["id"],
+            "expected": pair["expected"],
+            "verdict": fe_verdict,
+            "beta_fe": fe_stats["beta_pooled"],
+            "beta_re": re["beta_re"],
+            "beta_shift": abs(re["beta_re"] - fe_stats["beta_pooled"]),
+            "se_ratio": float(se_ratio),
+            "tau2": re["tau2"],
+            "I2": re["I2"],
+        })
+
+    return {
+        "n_pairs": len(pairs),
+        "per_pair": re_results,
+    }
+
+
+def run_sensitivity_analyses(pairs: list, alpha: float, output_dir: Path):
+    """Run all stratum-level sensitivity analyses and save results."""
+    log.info("Running sensitivity analyses...")
+
+    exclude_approx = sensitivity_exclude_approximate(pairs, alpha)
+    log.info(
+        f"Exclude-approximate: {exclude_approx['n_exact']} exact pairs, "
+        f"{exclude_approx['n_approximate']} with approximate strata"
+    )
+    if exclude_approx["exact_metrics"]:
+        log.info(f"  Exact-only accuracy: {exclude_approx['exact_metrics']['accuracy']:.3f}")
+    if exclude_approx["approximate_metrics"]:
+        log.info(f"  Approximate-containing accuracy: {exclude_approx['approximate_metrics']['accuracy']:.3f}")
+
+    loo = sensitivity_leave_one_out(pairs, alpha)
+    log.info(
+        f"Leave-one-out: {loo['n_stable']}/{loo['n_pairs']} pairs stable "
+        f"({loo['pct_stable']:.1%})"
+    )
+    unstable = [r for r in loo["per_pair"] if not r["stable"]]
+    for u in unstable:
+        changed = [d for d in u.get("dropped", []) if d["changed"]]
+        log.info(f"  Unstable: {u['id']} — flips when dropping: {[d['dropped_stratum'] for d in changed]}")
+
+    re = sensitivity_random_effects(pairs, alpha)
+    shifts = [r["beta_shift"] for r in re["per_pair"]]
+    se_ratios = [r["se_ratio"] for r in re["per_pair"]]
+    log.info(
+        f"Random-effects: mean |beta_FE - beta_RE| = {np.mean(shifts):.4f}, "
+        f"max = {np.max(shifts):.4f}"
+    )
+    log.info(
+        f"  SE inflation (RE/FE): mean = {np.mean(se_ratios):.3f}, "
+        f"max = {np.max(se_ratios):.3f}"
+    )
+
+    sensitivity_results = {
+        "alpha": alpha,
+        "exclude_approximate": exclude_approx,
+        "leave_one_out": {
+            "n_pairs": loo["n_pairs"],
+            "n_stable": loo["n_stable"],
+            "pct_stable": loo["pct_stable"],
+            "unstable_pairs": [
+                {
+                    "id": r["id"],
+                    "expected": r.get("expected"),
+                    "full_Q": r.get("full_Q"),
+                    "full_p": r.get("full_p"),
+                    "n_changed": r.get("n_changed"),
+                    "flipped_strata": [
+                        d["dropped_stratum"]
+                        for d in r.get("dropped", [])
+                        if d["changed"]
+                    ],
+                }
+                for r in loo["per_pair"]
+                if not r["stable"]
+            ],
+        },
+        "random_effects": {
+            "mean_beta_shift": float(np.mean(shifts)),
+            "max_beta_shift": float(np.max(shifts)),
+            "mean_se_ratio": float(np.mean(se_ratios)),
+            "max_se_ratio": float(np.max(se_ratios)),
+            "per_pair": re["per_pair"],
+        },
+    }
+
+    with open(output_dir / "sensitivity_results.json", "w") as f:
+        json.dump(sensitivity_results, f, indent=2)
+    log.info(f"Saved sensitivity results to {output_dir / 'sensitivity_results.json'}")
+
+    return sensitivity_results
+
+
 def main():
     parser = argparse.ArgumentParser(description="Systematic MR Q-test pipeline")
     parser.add_argument("--input", type=str, default="data/pairs_curated.json", help="Path to curated pairs JSON")
     parser.add_argument("--output", type=str, default="results/", help="Output directory")
     parser.add_argument("--alpha", type=float, default=0.05, help="Significance threshold for Q-test")
     parser.add_argument("--plot", action="store_true", help="Generate plots")
+    parser.add_argument("--sensitivity", action="store_true", help="Run stratum-level sensitivity analyses")
     args = parser.parse_args()
 
     log.info("Starting systematic MR Q-test pipeline")
@@ -363,6 +574,9 @@ def main():
         plot_roc_like(sweep, output_dir)
         plot_dot_plot(results, args.alpha, output_dir)
         plot_power_scatter(results, output_dir)
+
+    if args.sensitivity:
+        run_sensitivity_analyses(pairs, args.alpha, output_dir)
 
     log.info("Pipeline complete")
 

@@ -1,0 +1,810 @@
+{
+  "alpha": 0.05,
+  "exclude_approximate": {
+    "n_exact": 3,
+    "n_approximate": 58,
+    "exact_ids": [
+      "APOE4_AD_risk",
+      "sex_tau_spread",
+      "age_lecanemab_response"
+    ],
+    "exact_metrics": {
+      "accuracy": 0.6666666666666666,
+      "sensitivity": 0.6666666666666666,
+      "specificity": 0.0,
+      "tp": 2,
+      "fn": 1,
+      "fp": 0,
+      "tn": 0,
+      "n_correct": 2,
+      "n_total": 3
+    },
+    "approximate_metrics": {
+      "accuracy": 0.8620689655172413,
+      "sensitivity": 0.5789473684210527,
+      "specificity": 1.0,
+      "tp": 11,
+      "fn": 8,
+      "fp": 0,
+      "tn": 39,
+      "n_correct": 50,
+      "n_total": 58
+    }
+  },
+  "leave_one_out": {
+    "n_pairs": 61,
+    "n_stable": 52,
+    "pct_stable": 0.8524590163934426,
+    "unstable_pairs": [
+      {
+        "id": "HLA_DRB1_MS_risk",
+        "expected": "non-transport",
+        "full_Q": 23.123645469368743,
+        "full_p": 3.805606960172181e-05,
+        "n_changed": 1,
+        "flipped_strata": [
+          "EUR_IMSGC"
+        ]
+      },
+      {
+        "id": "latitude_vitD_MS",
+        "expected": "non-transport",
+        "full_Q": 23.659665427509292,
+        "full_p": 2.9418855517771014e-05,
+        "n_changed": 1,
+        "flipped_strata": [
+          "EUR_high_lat"
+        ]
+      },
+      {
+        "id": "ancestry_amyloid_threshold",
+        "expected": "non-transport",
+        "full_Q": 6.605818367644909,
+        "full_p": 0.08558141500810812,
+        "n_changed": 1,
+        "flipped_strata": [
+          "EUR_florbetaben"
+        ]
+      },
+      {
+        "id": "age_lecanemab_response",
+        "expected": "non-transport",
+        "full_Q": 4.706823027718549,
+        "full_p": 0.095044363339849,
+        "n_changed": 1,
+        "flipped_strata": [
+          "age_65_74"
+        ]
+      },
+      {
+        "id": "BMI_AD_MR",
+        "expected": "non-transport",
+        "full_Q": 14.142936802973974,
+        "full_p": 0.0027169083501664693,
+        "n_changed": 1,
+        "flipped_strata": [
+          "EUR_midlife"
+        ]
+      },
+      {
+        "id": "WHR_T2D_MR",
+        "expected": "non-transport",
+        "full_Q": 10.40594227395541,
+        "full_p": 0.015412709474832753,
+        "n_changed": 1,
+        "flipped_strata": [
+          "EUR_DIAGRAM"
+        ]
+      },
+      {
+        "id": "BMI_breast_cancer_MR",
+        "expected": "non-transport",
+        "full_Q": 22.510495201535505,
+        "full_p": 5.1072453586598066e-05,
+        "n_changed": 1,
+        "flipped_strata": [
+          "EUR_BCAC_premeno"
+        ]
+      },
+      {
+        "id": "SBP_AD_MR",
+        "expected": "non-transport",
+        "full_Q": 7.203280487804879,
+        "full_p": 0.06569316829066818,
+        "n_changed": 1,
+        "flipped_strata": [
+          "AFR"
+        ]
+      },
+      {
+        "id": "alcohol_liver_cirrhosis_MR",
+        "expected": "non-transport",
+        "full_Q": 9.25243852875432,
+        "full_p": 0.009791709072594301,
+        "n_changed": 1,
+        "flipped_strata": [
+          "EAS_CKB"
+        ]
+      }
+    ]
+  },
+  "random_effects": {
+    "mean_beta_shift": 0.011931650138671625,
+    "max_beta_shift": 0.20223678091348873,
+    "mean_se_ratio": 1.5328045464018898,
+    "max_se_ratio": 7.6501368713802895,
+    "per_pair": [
+      {
+        "id": "HLA_DRB1_MS_risk",
+        "expected": "non-transport",
+        "verdict": "non-transport",
+        "beta_fe": 0.8764570230607966,
+        "beta_re": 0.6742202421473079,
+        "beta_shift": 0.20223678091348873,
+        "se_ratio": 4.599574986529832,
+        "tau2": 0.052877224874525695,
+        "I2": 0.8702626709973557
+      },
+      {
+        "id": "latitude_vitD_MS",
+        "expected": "non-transport",
+        "verdict": "non-transport",
+        "beta_fe": 0.27427509293680297,
+        "beta_re": 0.2099833055456242,
+        "beta_shift": 0.06429178739117877,
+        "se_ratio": 2.96016798140329,
+        "tau2": 0.032116562644475266,
+        "I2": 0.8732019263251342
+      },
+      {
+        "id": "sex_ratio_MS",
+        "expected": "non-transport",
+        "verdict": "non-transport",
+        "beta_fe": 0.9766626722588374,
+        "beta_re": 0.9562545805029139,
+        "beta_shift": 0.020408091755923508,
+        "se_ratio": 4.027200264416712,
+        "tau2": 0.05074700722394223,
+        "I2": 0.9246776715441773
+      },
+      {
+        "id": "EBV_MS_causal",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 1.4748374512353704,
+        "beta_re": 1.4748374512353704,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "smoking_MS_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.14718550106609807,
+        "beta_re": 0.14718550106609807,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "vitD_MS_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": -0.24473342002600781,
+        "beta_re": -0.24473342002600781,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "BMI_MS_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.17517870917973774,
+        "beta_re": 0.17517870917973774,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "APOE4_AD_risk",
+        "expected": "non-transport",
+        "verdict": "non-transport",
+        "beta_fe": 1.1608212115169025,
+        "beta_re": 1.045986833071741,
+        "beta_shift": 0.11483437844516153,
+        "se_ratio": 7.6501368713802895,
+        "tau2": 0.11863002284263706,
+        "I2": 0.9751432479961101
+      },
+      {
+        "id": "sex_tau_spread",
+        "expected": "non-transport",
+        "verdict": "non-transport",
+        "beta_fe": 0.2992901838091514,
+        "beta_re": 0.28571656195397555,
+        "beta_shift": 0.013573621855175855,
+        "se_ratio": 2.3197804799736237,
+        "tau2": 0.01495090457383106,
+        "I2": 0.8095019323596517
+      },
+      {
+        "id": "ancestry_amyloid_threshold",
+        "expected": "non-transport",
+        "verdict": "transport",
+        "beta_fe": 0.8145860709592642,
+        "beta_re": 0.7917318916115088,
+        "beta_shift": 0.022854179347755355,
+        "se_ratio": 1.6932302547995255,
+        "tau2": 0.002765537513997759,
+        "I2": 0.5458549065330186
+      },
+      {
+        "id": "age_lecanemab_response",
+        "expected": "non-transport",
+        "verdict": "transport",
+        "beta_fe": -0.2815138592750533,
+        "beta_re": -0.2860845580396141,
+        "beta_shift": 0.004570698764560788,
+        "se_ratio": 1.5803021991873887,
+        "tau2": 0.013189610389610383,
+        "I2": 0.5750849377123441
+      },
+      {
+        "id": "CRP_AD_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.004345132743362831,
+        "beta_re": 0.004345132743362831,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "TREM2_AD_causal",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 1.067746305418719,
+        "beta_re": 1.067746305418719,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "education_AD_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": -0.09749979656603466,
+        "beta_re": -0.09749979656603466,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "BMI_AD_MR",
+        "expected": "non-transport",
+        "verdict": "non-transport",
+        "beta_fe": -0.05070631970260222,
+        "beta_re": -0.02576497636383872,
+        "beta_shift": 0.024941343338763498,
+        "se_ratio": 2.297178915041651,
+        "tau2": 0.017322295423023576,
+        "I2": 0.7878799826518944
+      },
+      {
+        "id": "T2D_AD_MR",
+        "expected": "non-transport",
+        "verdict": "transport",
+        "beta_fe": 0.06595695618754803,
+        "beta_re": 0.06640503584094126,
+        "beta_shift": 0.0004480796533932324,
+        "se_ratio": 1.0304528420029782,
+        "tau2": 5.286791790913855e-05,
+        "I2": 0.041136649014576476
+      },
+      {
+        "id": "alcohol_AD_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.01791632031033527,
+        "beta_re": 0.01791632031033527,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "LDL_CAD_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.5108714705512529,
+        "beta_re": 0.5108714705512529,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "SBP_stroke_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.3055830556877677,
+        "beta_re": 0.3055830556877677,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "BMI_T2D_MR",
+        "expected": "non-transport",
+        "verdict": "non-transport",
+        "beta_fe": 0.7574613557070276,
+        "beta_re": 0.8047284068532568,
+        "beta_shift": 0.0472670511462292,
+        "se_ratio": 3.4454017344816394,
+        "tau2": 0.03919299723957576,
+        "I2": 0.8897698307571336
+      },
+      {
+        "id": "alcohol_CAD_MR",
+        "expected": "non-transport",
+        "verdict": "non-transport",
+        "beta_fe": 0.17088069956277327,
+        "beta_re": 0.1906927054355747,
+        "beta_shift": 0.019812005872801436,
+        "se_ratio": 2.562015407867274,
+        "tau2": 0.01967424763542562,
+        "I2": 0.8410996972854945
+      },
+      {
+        "id": "HDL_CAD_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": -0.003426940429058096,
+        "beta_re": -0.003426940429058096,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "triglycerides_CAD_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.2397260273972603,
+        "beta_re": 0.2397260273972603,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "Lp_a_CAD_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.10772727272727271,
+        "beta_re": 0.10772727272727271,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "smoking_CAD_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.4328448947778644,
+        "beta_re": 0.4328448947778644,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "BMI_CAD_MR",
+        "expected": "non-transport",
+        "verdict": "non-transport",
+        "beta_fe": 0.3695121951219512,
+        "beta_re": 0.4276435433231701,
+        "beta_shift": 0.0581313482012189,
+        "se_ratio": 2.3580467732855013,
+        "tau2": 0.012823498964803315,
+        "I2": 0.7790005614823133
+      },
+      {
+        "id": "T2D_CAD_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.1123376623376623,
+        "beta_re": 0.1123376623376623,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "SBP_CAD_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.1789272030651341,
+        "beta_re": 0.1789272030651341,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "WHR_T2D_MR",
+        "expected": "non-transport",
+        "verdict": "non-transport",
+        "beta_fe": 0.49431255042065225,
+        "beta_re": 0.5215527816256745,
+        "beta_shift": 0.02724023120502228,
+        "se_ratio": 2.0107699626048907,
+        "tau2": 0.02027527607361963,
+        "I2": 0.7117031864083494
+      },
+      {
+        "id": "fasting_glucose_T2D_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.7872413793103449,
+        "beta_re": 0.7872413793103449,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "smoking_lung_cancer_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.5839256505576208,
+        "beta_re": 0.5839256505576208,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "BMI_breast_cancer_MR",
+        "expected": "non-transport",
+        "verdict": "non-transport",
+        "beta_fe": 0.011347408829174675,
+        "beta_re": 0.0065016382490608055,
+        "beta_shift": 0.004845770580113869,
+        "se_ratio": 2.976309703870341,
+        "tau2": 0.022274011745113502,
+        "I2": 0.866728831456566
+      },
+      {
+        "id": "alcohol_breast_cancer_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.1456286427976686,
+        "beta_re": 0.1456286427976686,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "BMI_colorectal_cancer_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.17253742802303262,
+        "beta_re": 0.17253742802303262,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "height_prostate_cancer_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.08885245901639345,
+        "beta_re": 0.08885245901639345,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "smoking_bladder_cancer_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.4111262665627436,
+        "beta_re": 0.4111262665627436,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "BMI_endometrial_cancer_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.5204325798908808,
+        "beta_re": 0.5204325798908808,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "BMI_depression_MR",
+        "expected": "non-transport",
+        "verdict": "transport",
+        "beta_fe": 0.09705882352941177,
+        "beta_re": 0.09705882352941177,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "cannabis_schizophrenia_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.09789336801040313,
+        "beta_re": 0.09789336801040313,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "smoking_schizophrenia_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.13505330490405118,
+        "beta_re": 0.13505330490405118,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "education_schizophrenia_MR",
+        "expected": "non-transport",
+        "verdict": "transport",
+        "beta_fe": 0.0507843137254902,
+        "beta_re": 0.048086640773556656,
+        "beta_shift": 0.002697672951933544,
+        "se_ratio": 1.1301979684927699,
+        "tau2": 0.00029516129032258065,
+        "I2": 0.14245679588977114
+      },
+      {
+        "id": "CRP_depression_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.04667100130039012,
+        "beta_re": 0.04667100130039012,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "BMI_bipolar_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": -0.012921108742004262,
+        "beta_re": -0.012921108742004262,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "vitD_AD_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": -0.07547797173732336,
+        "beta_re": -0.07547797173732336,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "smoking_AD_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": -0.05466950959488273,
+        "beta_re": -0.05466950959488273,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "SBP_AD_MR",
+        "expected": "non-transport",
+        "verdict": "transport",
+        "beta_fe": 0.05302439024390244,
+        "beta_re": 0.05233486671743183,
+        "beta_shift": 0.0006895235264706076,
+        "se_ratio": 1.717873882725335,
+        "tau2": 0.005097145814847679,
+        "I2": 0.5835230899200737
+      },
+      {
+        "id": "physical_activity_AD_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": -0.12102082797634355,
+        "beta_re": -0.12102082797634355,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "sleep_duration_AD_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.032537313432835814,
+        "beta_re": 0.032537313432835814,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "IL6_AD_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": -0.023305624826821834,
+        "beta_re": -0.023305624826821834,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "APOE2_AD_protective",
+        "expected": "non-transport",
+        "verdict": "transport",
+        "beta_fe": -0.6284879474068663,
+        "beta_re": -0.5703602342714686,
+        "beta_shift": 0.05812771313539766,
+        "se_ratio": 1.7001024301323637,
+        "tau2": 0.013120238095238086,
+        "I2": 0.492135680549592
+      },
+      {
+        "id": "LDL_stroke_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.11789336801040312,
+        "beta_re": 0.11789336801040312,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "urate_gout_MR",
+        "expected": "non-transport",
+        "verdict": "non-transport",
+        "beta_fe": 0.8937860244769048,
+        "beta_re": 0.9284906476935171,
+        "beta_shift": 0.034704623216612274,
+        "se_ratio": 3.2476898083344268,
+        "tau2": 0.04870890843741281,
+        "I2": 0.8741081950519483
+      },
+      {
+        "id": "IL6R_CAD_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": -0.04772727272727272,
+        "beta_re": -0.04772727272727272,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "alcohol_liver_cirrhosis_MR",
+        "expected": "non-transport",
+        "verdict": "non-transport",
+        "beta_fe": 0.5769660638081691,
+        "beta_re": 0.582555504905997,
+        "beta_shift": 0.005589441097827885,
+        "se_ratio": 2.171127103640884,
+        "tau2": 0.029134081632653065,
+        "I2": 0.783840768702814
+      },
+      {
+        "id": "smoking_COPD_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.49895920066611155,
+        "beta_re": 0.49895920066611155,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "BMI_kidney_cancer_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.2939646201873049,
+        "beta_re": 0.2939646201873049,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "insulin_resistance_pancreatic_cancer_MR",
+        "expected": "non-transport",
+        "verdict": "transport",
+        "beta_fe": 0.393720050441362,
+        "beta_re": 0.3931537343814218,
+        "beta_shift": 0.0005663160599401751,
+        "se_ratio": 1.0235177603445589,
+        "tau2": 0.0006600553205336825,
+        "I2": 0.03651010649643567
+      },
+      {
+        "id": "telomere_length_cancer_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.14602080624187255,
+        "beta_re": 0.14602080624187255,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "IL6_MS_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": -0.036014399588583185,
+        "beta_re": -0.036014399588583185,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "gut_microbiome_MS",
+        "expected": "non-transport",
+        "verdict": "transport",
+        "beta_fe": 0.08575609756097562,
+        "beta_re": 0.08575609756097562,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      },
+      {
+        "id": "BMI_asthma_MR",
+        "expected": "transport",
+        "verdict": "transport",
+        "beta_fe": 0.21381443298969072,
+        "beta_re": 0.21381443298969072,
+        "beta_shift": 0.0,
+        "se_ratio": 1.0,
+        "tau2": 0.0,
+        "I2": 0.0
+      }
+    ]
+  }
+}

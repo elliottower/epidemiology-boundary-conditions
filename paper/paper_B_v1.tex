@@ -1,0 +1,741 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage[round]{natbib}
+\usepackage[margin=1in]{geometry}
+
+\renewcommand{\arraystretch}{1.3}
+\setlength{\abovetopsep}{6pt}
+
+\newcommand{\Gr}{\mathrm{Gr}}
+\newcommand{\R}{\mathbb{R}}
+\title{When Does Geometry Help Causal Inference? Boundary Conditions for Holonomy, Curvature, and Subspace Methods}
+
+\author{Elliot Tower\\
+\texttt{elliot@elliottower.ai}}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Geometric and topological methods---Grassmannian holonomy, sheaf cohomology, discrete curvature---are increasingly proposed for causal inference. We identify three structural conditions that determine when they outperform standard statistics and when they reduce to simpler alternatives.
+
+First, \emph{subspace-valued data}: Grassmannian holonomy detects global inconsistency invisible to pairwise alternatives (Berry phase $= 1.85$, $p < 0.001$), with a power boundary at $\geq 500$ subjects per site confirmed by an ABIDE null ($p = 0.16$). Second, \emph{edge-specific heterogeneity}: per-edge sheaf $Q$ tests recover planted DAG structure that global tests miss ($p < 10^{-300}$ vs.\ $p = 0.659$); on scalar stalks the sheaf test reduces exactly to Cochran's $Q$. Third, \emph{method-specific failure modes}: Forman--Ricci curvature acts as a degree-deficit feature whose discrimination direction depends on topology (AUROC $0.68$ on random DAGs, $0.27$--$0.38$ on benchmarks), and PCA destroys treatment effect signal.
+
+These conditions map onto information-geometric primitives: $Q$ is the Fisher information norm of the obstruction cocycle, holonomy is a geometric phase in the Fisher--Rao manifold, and edge-specific heterogeneity constrains the KL divergence decomposition across DAG edges. The conditions are testable in advance, providing a decision procedure for choosing between geometric and standard methods. A companion paper validates the sheaf result on 61 published Mendelian randomization pairs across five clinical domains.
+\end{abstract}
+
+%% ==============================================================
+\section{Introduction}
+\label{sec:intro}
+%% ==============================================================
+
+Multiple sclerosis (MS) illustrates structural challenges common across clinical epidemiology.
+Disease mechanisms vary across patient strata---relapsing vs.\ progressive phenotypes, treatment regimens, genetic backgrounds---yet some causal relationships remain consistent across all strata, such as the downstream path from neurodegeneration to disability \citep{lublin2014defining}.
+Federated imaging studies across hospital sites carry acquisition-dependent confounds \citep{fortin2018harmonization}.
+Causal DAGs estimated from observational data contain both true edges and spurious associations with no reliable post-hoc filter \citep{glymour2019review}.
+Treatment heterogeneity---the fact that patients respond differently to the same intervention---remains difficult to detect and characterize \citep{athey2016recursive}.
+
+Each problem has a geometric aspect.
+Federated consistency asks whether local estimates are compatible under known transformations---what sheaf cohomology measures \citep{robinson2014topological, curry2014sheaves}.
+For multivariate data, the relevant geometry lives on the Grassmannian $\Gr(k,d)$, whose curvature generates Berry phase when local sections are transported around closed loops \citep{berry1984quantal, simon1983holonomy}.
+Edge validation in causal graphs asks whether topological features carry information about edge truthfulness.
+Treatment subtype recovery asks whether patients cluster in CATE-augmented covariate space.
+The question is whether these connections produce practical advantages or repackage standard statistics in topological language.
+
+We answer this by characterizing the boundary between the two regimes through simulation experiments with planted structure that demonstrate \emph{existence and consistency} of each separation. A companion paper \citep{tower2026sheaf} validates the positive sheaf result on 61 published Mendelian randomization pairs across five clinical domains.
+
+\paragraph{Contributions.}
+\begin{itemize}
+\item \textbf{Boundary conditions (\S\ref{sec:methods}).} Three structural conditions---subspace-valued data, cyclic consistency constraints, edge-specific heterogeneity---under which geometric methods detect structure invisible to scalar and pairwise alternatives. The conditions are testable in advance, providing a decision procedure (Figure~\ref{fig:boundary}).
+\item \textbf{Algebraic reduction.} On scalar stalks, the sheaf Laplacian test statistic is \emph{exactly} Cochran's $Q$ via the $W$-weighted Schur complement \citep{tower2026sheaf}. This reduction explains why the method's value lies in the per-edge and subspace extensions, not the scalar case.
+\item \textbf{Negative results (\S\ref{sec:res-failures}).} Absent the boundary conditions, geometric methods reduce to standard tools or fail: Forman--Ricci curvature acts as a degree-deficit feature whose discrimination direction is topology-dependent (AUROC $0.677$ on random DAGs, $0.27$--$0.38$ on benchmark DAGs), betweenness centrality dominates it on all four benchmark graphs, ORC scores below chance, and PCA destroys CATE signal.
+\item \textbf{Simulation existence demonstrations (\S\ref{sec:ms}--\ref{sec:ad}).} MS- and AD-calibrated simulations with planted structure demonstrate each boundary condition. Calibrated Berry phase boundary analysis on $\Gr(3,34)$ with ENIGMA-derived parameters establishes that holonomy detection requires $\geq 500$ subjects per site (80\% power); ABIDE cortical thickness data (20 sites, 1{,}031 subjects) produces a boundary-consistent null.
+\item \textbf{External curvature benchmark (\S\ref{sec:res-failures}).} Forman--Ricci validated on four standard benchmark DAGs (Asia, Sachs, Insurance, Alarm) from the bnlearn repository; betweenness centrality exceeds curvature discrimination in all four graphs, confirming the degree-deficit interpretation.
+\item \textbf{Information-geometric interpretation (\S\ref{sec:info-geom}).} The boundary conditions correspond to conditions on the Fisher--Rao geometry of the statistical model: Cochran's $Q$ is the Fisher information norm of the obstruction cocycle, Grassmannian holonomy is a geometric phase in the Fisher--Rao manifold, and edge-specific heterogeneity is a constraint on the KL divergence decomposition across DAG edges.
+\end{itemize}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig4_boundary_conditions.pdf}
+\caption{Three testable conditions determine when geometric methods outperform standard alternatives. Each column is independent: a dataset may satisfy one, two, or all three. When none hold, standard methods suffice.}
+\label{fig:boundary}
+\end{figure}
+
+%% ==============================================================
+\section{Methods}
+\label{sec:methods}
+%% ==============================================================
+
+\subsection{Sheaf consistency testing}
+\label{sec:meth-sheaf}
+
+A sheaf on a network $G = (V, E)$ assigns local data (\emph{stalks}) to each vertex and requires that overlapping assignments agree on shared edges via \emph{restriction maps}.
+When they disagree, the obstruction lives in the first cohomology group $H^1$, which measures the failure of global consistency \citep{curry2014sheaves, robinson2014topological}.
+
+\paragraph{Scalar stalks.}
+For scalar stalks (effect estimates $\hat\beta_k$ with standard errors $\mathrm{se}_k$) and pairwise-difference restriction maps on a complete graph of $K$ sites, the sheaf Laplacian test statistic is
+\begin{equation}
+    Q = \mathbf{o}^\top \Sigma^{-1} \mathbf{o}, \quad
+    \mathbf{o} = D_0 \boldsymbol{\hat\beta}, \quad
+    \Sigma = D_0 \operatorname{diag}(\mathrm{se}^2) D_0^\top,
+    \label{eq:sheaf-Q}
+\end{equation}
+where $D_0$ is the signed incidence matrix and $Q \sim \chi^2_{\mathrm{rank}(D_0)}$ under the null.
+
+\paragraph{Subspace-valued stalks.}
+For sections $V_1, \ldots, V_m \in \Gr(k,d)$ arranged in a cycle, the parallel transport from $V_i$ to $V_{i+1}$ is $T_{i \to i+1} = U V^\top$ where $V_i^\top V_{i+1} = U \Sigma V^\top$ (SVD).
+The composed \emph{holonomy} $\Phi = T_{m \to 1} \cdots T_{1 \to 2}$ equals the identity if and only if sections are globally consistent.
+For the linked-column construction (two columns of $V_0$ rotating toward shared perpendicular directions with $\pi/2$ phase offset at radius $r$), the holonomy norm is
+\begin{equation}\label{eq:berry}
+    \|\Phi - I_k\|_F = 2\sqrt{2}\,|\sin(\pi \sin^2 r)|.
+\end{equation}
+
+\paragraph{Per-edge testing.}
+For a causal DAG estimated in $S$ strata, each edge is tested independently:
+$Q^{(e)} = \mathbf{z}^\top \Sigma^{-1} \mathbf{z}$ with $z_{ij} = \hat\beta_i^{(e)} - \hat\beta_j^{(e)}$, under $Q^{(e)} \sim \chi^2_{S-1}$.
+Bonferroni correction controls the family-wise error rate.
+
+\paragraph{$H^1$ effect-modifier classification.}
+For a mechanism--modifier pair, patients are stratified by the modifier and the causal effect estimated within each stratum.
+The sheaf $Q$ test classifies the pair as transportable ($Q$ non-significant, $H^1 \approx 0$) or stratum-specific ($Q$ significant, $H^1 \neq 0$).
+Sample size per stratum is calibrated to expected interaction strength.
+
+\subsection{Confound detection}
+\label{sec:meth-confound}
+
+\paragraph{Partial correlation collapse.}
+For each biomarker $j$, we compute raw Pearson correlation, partial correlation (conditioning on all other covariates), and intensive margin correlation (conditioning on treatment).
+Confounded associations should collapse under partial conditioning.
+
+\paragraph{Bracket-norm confound audit.}
+Following the confound-audit framework of \citet{tower2026bracket}, we test whether geometric metrics survive after controlling for a mundane confound. For multi-site imaging, confound leakage is $\Delta = (R^2_{\mathrm{metric}} - R^2_{\mathrm{unique}}) / R^2_{\mathrm{metric}}$, where $R^2_{\mathrm{unique}} = R^2_{\mathrm{both}} - R^2_{\mathrm{acq}}$ is disease-severity variance unexplained by acquisition parameters.
+
+\subsection{Curvature-based edge validation}
+\label{sec:meth-curvature}
+
+We test whether edge features discriminate true positive (TP) from false positive (FP) edges in graphs learned from structural equation models.
+Six features are tested: Forman--Ricci curvature ($\kappa_F = 4 - d(u) - d(v)$) \citep{forman2003bochner}, augmented Forman ($\kappa_F + 3|\mathcal{N}(u) \cap \mathcal{N}(v)|$), Jaccard coefficient, edge betweenness \citep{girvan2002community}, partial correlation magnitude, and average endpoint clustering coefficient.
+Ollivier--Ricci curvature \citep{ollivier2009ricci, ni2019community} serves as a baseline.
+Discrimination is measured by AUROC across 6 conditions (linear/nonlinear SEM $\times$ 3 thresholds, 60 graphs per condition).
+
+\subsection{Treatment heterogeneity detection}
+\label{sec:meth-hte}
+
+Four CATE estimators (KNN, random forest, gradient boosting T-learners; random forest S-learner) are crossed with four clustering methods (PCA $+$ $K$-means, CATE $K$-means, CATE$+$covariates $K$-means, spectral on CATE RBF kernel).
+Oracle baselines (true CATE) and a naive baseline (raw-covariate $K$-means) bound performance.
+
+%% ==============================================================
+\section{Results}
+\label{sec:results}
+%% ==============================================================
+
+Results are organized by the three boundary conditions rather than by experiment batch.
+For each condition, we show the case where geometry reduces to standard tools and the case where it adds signal.
+
+\subsection{Condition 1: Scalar vs.\ subspace-valued data}
+\label{sec:ms}
+\label{sec:res-scalar-vs-subspace}
+
+\paragraph{Scalar stalks reduce to Cochran's $Q$.}
+We simulate $K = 8$ hospital sites with scalar treatment effect estimates on a complete graph.
+The sheaf test achieves proper calibration (type~I error $= 5.85\%$ at $\alpha = 0.05$) with power reaching $96.8\%$ at bias $\delta = 0.20$, and localizes the biased site to rank~1 in 94\% of simulations.
+At every bias level, structured separation, and replicate, the sheaf test produces results \emph{numerically identical} to Cochran's $Q$.
+This is not coincidence: on a complete graph with scalar stalks and pairwise-difference restriction maps, the quadratic form in Eq.~\eqref{eq:sheaf-Q} reduces to Cochran's $Q$ via the $W$-weighted Schur complement \citep[Appendix~C]{tower2026sheaf}.
+The reduction means that \emph{any} advantage of sheaf methods over standard meta-analytic heterogeneity testing must come from the per-edge or subspace extensions, not the scalar case.
+
+\paragraph{Subspace-valued stalks produce genuine holonomy.}
+We test on $\Gr(3, 20)$ with $m = 24$ sections forming a closed loop, using a linked-column Berry phase construction at radius $r = 0.5$.
+The cocycle obstruction test evaluates three simultaneous conditions: (C1)~pairwise consistency, (C2)~global inconsistency, (C3)~scalar blindness.
+
+\begin{table}[t]
+\centering
+\caption{Cocycle obstruction: pairwise consistent yet globally inconsistent.}
+\label{tab:cocycle}
+\small
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Metric} & \textbf{Value} & \textbf{Threshold} \\
+\midrule
+Measured holonomy $\|\Phi - I\|_F$ & $1.851$ & --- \\
+Predicted (Eq.~\ref{eq:berry}) & $1.869$ & --- \\
+$p$-value vs.\ null & $< 0.001$ & --- \\
+\midrule
+Max pairwise distance & $0.730$ & $0.767$ (C1 holds) \\
+Holonomy norm & $1.851$ & $1.226$ (C2 holds) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+All three conditions hold simultaneously (Table~\ref{tab:cocycle}).
+The measured holonomy ($1.851$) matches the predicted Berry phase ($1.869$) to within 1\%.
+Per-step rotation is masked by noise (max pairwise distance $0.730 < 0.767$), but the composed holonomy accumulates coherently far above the null threshold ($1.851 > 1.226$).
+
+Three competitor baselines fail.
+Maximum pairwise angle cannot distinguish planted from control sections ($0.730$ vs.\ $0.695$, 5\% difference).
+Random-effects and CKA tests detect subspace spread ($p < 10^{-77}$) but are blind to the cyclic obstruction that makes the holonomy non-trivial.
+Only composed parallel transport detects the global inconsistency.
+
+\textbf{Boundary.} The transition from scalar to subspace-valued data is the primary determinant of whether geometric structure carries information.
+The holonomy signal accumulates coherently as $\sqrt{m}$ over $m$ loop steps, producing a signal-to-noise ratio of $\sqrt{m} \approx 5$ for $m = 24$---a separation mechanism with no scalar analogue.
+This condition has no real-data instance in the present work, but a calibrated simulation establishes the detection boundary for realistic multi-site neuroimaging parameters.
+
+\paragraph{Detection boundary in ENIGMA-realistic data.}
+The idealized construction above operates on exact subspaces.
+In practice, subspaces must be estimated via PCA from finite samples, introducing estimation noise that competes with the Berry phase signal.
+We test detectability on $\Gr(3, 34)$ with $m = 24$ sites, using 34 Desikan--Killiany cortical thickness regions, site-specific additive biases ($\sigma = 0.05$) and multiplicative scaling ($\sigma = 0.03$) calibrated to \citet{fortin2018harmonization}, and per-subject measurement noise ($\sigma = 0.05$).
+For each of six sample sizes ($n = 100$ to $5{,}000$ subjects per site), we generate 50 realizations each of the Berry phase condition (planted holonomy $= 1.594$, linked-column construction at $r = 0.5$) and the null condition (same biological covariance and site effects, no cyclic rotation), compute PCA subspaces, and measure composed holonomy around the sequential cycle.
+
+\begin{table}[t]
+\centering
+\caption{Berry phase detection boundary on $\Gr(3, 34)$ with ENIGMA-calibrated site effects. Separation is the distance between Berry phase and null holonomy distributions in units of null standard deviation. Power is the fraction of Berry phase trials exceeding the 95th percentile of the null.}
+\label{tab:boundary}
+\small
+\begin{tabular}{@{}rcccccc@{}}
+\toprule
+\textbf{$n$/site} & \textbf{Berry} & \textbf{Null} & \textbf{Sep.\ ($\sigma$)} & \textbf{Power} & \textbf{Recovery} \\
+\midrule
+100  & $1.33 \pm 0.58$ & $1.02 \pm 0.46$ & 0.7 & 0.18 & 83\% \\
+200  & $1.33 \pm 0.46$ & $0.76 \pm 0.34$ & 1.7 & 0.62 & 83\% \\
+500  & $1.20 \pm 0.41$ & $0.43 \pm 0.24$ & 3.2 & 0.80 & 75\% \\
+1000 & $1.18 \pm 0.39$ & $0.38 \pm 0.18$ & 4.5 & 0.92 & 74\% \\
+2000 & $1.08 \pm 0.30$ & $0.23 \pm 0.13$ & 6.8 & 0.98 & 68\% \\
+5000 & $1.24 \pm 0.34$ & $0.16 \pm 0.08$ & 13.9 & 1.00 & 78\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:boundary} shows that detection reaches 80\% power at approximately 500 subjects per site (3.2$\sigma$ separation), crossing the $z = 1.96$ threshold between 200 and 500 subjects.
+The recovered holonomy ($1.20 \pm 0.41$ at $n = 500$) is 75\% of the planted value---PCA estimation noise attenuates the signal but does not eliminate it.
+The null holonomy drops monotonically from $1.02$ to $0.16$ as sample size increases, reflecting improved subspace estimation; the Berry phase holonomy plateaus near $1.2$, confirming that the geometric signal is distinct from estimation noise.
+ENIGMA cortical thickness studies typically report 50--500 subjects per site across 50+ sites \citep{thompson2020enigma}; the boundary analysis places holonomy detection at the upper end of this range, requiring the larger-enrollment sites.
+
+\paragraph{Empirical test on ABIDE cortical thickness.}
+To test the boundary prediction on real multi-site data, we applied the holonomy pipeline to the Autism Brain Imaging Data Exchange (ABIDE~I) dataset \citep{di2014autism}: 1{,}031 subjects across 20 sites, each with 34 Desikan--Killiany cortical thickness measures.
+Site sizes range from 25 to 175, all below the 500-subject detection threshold established above.
+We computed $k = 3$ PCA subspaces per site, measured pairwise Grassmannian distances (mean $= 1.57$, max $= 2.15$), and tested composed holonomy around the full 20-site cycle against a 2{,}000-permutation null.
+
+The observed holonomy ($\|\Phi - I_k\|_F = 2.69$) is elevated above the null mean ($2.13 \pm 0.53$) but non-significant ($p = 0.16$).
+A 10-site subcycle shows a similar pattern ($2.67$ vs.\ null $1.78 \pm 0.65$, $p = 0.085$).
+The substantial pairwise subspace distances confirm that real site effects exist---scanner and protocol differences genuinely rotate the cortical thickness covariance structure---but small per-site samples produce PCA estimates too noisy for holonomy to distinguish structured cyclic effects from estimation noise.
+This outcome matches the boundary prediction: all 20 ABIDE sites fall below the 500-subject threshold where 80\% power begins.
+
+\subsection{Condition 2: Global vs.\ edge-specific heterogeneity}
+\label{sec:res-global-vs-edge}
+
+\paragraph{Global tests miss edge-specific structure.}
+A 3-node MS DAG (inflammation $\leftrightarrow$ degeneration $\to$ disability) is estimated in 8 disease strata.
+The feedback edges vary dramatically: early RRMS shows dominant infl$\to$degen ($0.404$) with negligible reverse flow ($-0.001$), while PPMS shows the opposite ($-0.008$ and $0.385$).
+Disability edges remain stable (variance $\sim\!100\times$ smaller).
+
+A global Frobenius norm test averages these variances and produces $p = 0.659$ (non-significant).
+Per-edge sheaf $Q$ tests recover the true structure (Table~\ref{tab:dag}). With four edges tested, the Bonferroni-corrected threshold is $\alpha_{\mathrm{corr}} = 0.05/4 = 0.0125$; both mechanism edges survive correction ($p < 10^{-300}$), while both downstream edges remain non-significant ($p > 0.18$).
+
+\begin{table}[t]
+\centering
+\caption{Per-edge sheaf $Q$ tests on the MS inflammation--degeneration--disability DAG across 8 strata.}
+\label{tab:dag}
+\small
+\begin{tabular}{@{}lcccl@{}}
+\toprule
+\textbf{Edge} & $\boldsymbol{Q}$ & $\boldsymbol{p}$ & \textbf{df} & \textbf{Het.?} \\
+\midrule
+infl $\to$ degen & $1806.9$ & $< 10^{-300}$ & 7 & Yes \\
+degen $\to$ infl & $1549.6$ & $< 10^{-300}$ & 7 & Yes \\
+infl $\to$ disab & $7.05$ & $0.423$ & 7 & No \\
+degen $\to$ disab & $9.98$ & $0.189$ & 7 & No \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Treatment signatures in the simulation reflect planted coefficients calibrated to known mechanisms (simulated, not estimated from trial data): BTK inhibition suppresses infl$\to$degen from $0.404$ to $0.002$; siponimod preserves degen$\to$disab ($0.386$), consistent with relapse-independent progression \citep{kappos2018siponimod}.
+
+\paragraph{$H^1$ classification achieves clean bimodal separation.}
+Seven MS mechanism--modifier pairs are classified as transportable or stratum-specific (Table~\ref{tab:h1}).
+
+\begin{table}[t]
+\centering
+\caption{$H^1$ effect-modifier classification: three-order-of-magnitude gap between categories.}
+\label{tab:h1}
+\small
+\begin{tabular}{@{}llccrl@{}}
+\toprule
+\textbf{Pair} & \textbf{Expected} & $\boldsymbol{\gamma}$ & $\boldsymbol{Q}$ & $\boldsymbol{p}$ & \textbf{Correct} \\
+\midrule
+HLA $\times$ EBV & transport & $0.10$ & $3.30$ & $0.348$ & Yes \\
+EBV necessity & transport & $0.05$ & $6.47$ & $0.091$ & Yes \\
+Vitamin D & transport & $0.04$ & $6.97$ & $0.073$ & Yes \\
+\midrule
+Sex $\times$ course & non-transp & $0.50$ & $2434$ & $< 10^{-300}$ & Yes \\
+Genetics $\times$ OCB & non-transp & $0.60$ & $3588$ & $< 10^{-300}$ & Yes \\
+Age $\times$ anti-CD20 & non-transp & $0.40$ & $1705$ & $< 10^{-300}$ & Yes \\
+Phenotype $\times$ GM & non-transp & $0.45$ & $1828$ & $< 10^{-300}$ & Yes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+All 7 pairs correctly classified (100\%).
+Transport pairs ($Q < 7$, $p > 0.07$) are exposure$\to$mechanism edges with weak interaction ($\gamma \leq 0.10$); non-transport pairs ($Q > 1700$, $p < 10^{-300}$) have strong interactions ($\gamma \geq 0.40$).
+
+\textbf{Boundary.} When a DAG contains both heterogeneous and homogeneous edges, global tests dilute the signal.
+Per-edge sheaf $Q$ tests avoid this by testing each structural relationship independently.
+The $H^1$ classifier operationalizes this as a practical workflow: classify each mechanism--modifier pair as transportable or stratum-specific with no manual threshold tuning.
+
+\subsection{Condition 3: Method-specific failure modes}
+\label{sec:res-failures}
+
+Two negative results characterize failure modes orthogonal to the boundary conditions above.
+
+\paragraph{Curvature type: degree-deficit features discriminate, global transport does not.}
+Ollivier--Ricci curvature yields AUROC $= 0.466$ for TP vs.\ FP edge discrimination (below chance).
+Forman--Ricci curvature achieves AUROC $= 0.677$ (Table~\ref{tab:curvature}), consistent across all six conditions ($0.634$--$0.677$).
+Partial correlation magnitude---a non-topological feature---performs comparably (AUROC $= 0.657$), and edge betweenness (also degree-sensitive) reaches $0.610$.
+
+\begin{table}[t]
+\centering
+\caption{Edge feature AUROC for TP vs.\ FP discrimination in learned causal graphs (best condition per feature, 60 graphs/condition).}
+\label{tab:curvature}
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Feature} & \textbf{Best AUROC} & \textbf{Condition} & \textbf{Direction} \\
+\midrule
+Forman--Ricci & $\mathbf{0.677}$ & linear / loose & TP $>$ FP \\
+$|\text{Partial corr}|$ & $0.657$ & nonlinear / loose & TP $>$ FP \\
+Betweenness & $0.610$ & linear / loose & TP $>$ FP \\
+Avg.\ clustering & $0.568$ & nonlinear / loose & TP $>$ FP \\
+\midrule
+ORC (initial) & $0.466$ & linear & wrong dir. \\
+Augmented Forman & $0.484$ & --- & wrong dir. \\
+Jaccard & $0.408$ & --- & wrong dir. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The mechanism is a degree asymmetry: $\kappa_F = 4 - d(u) - d(v)$ is higher when both endpoints have low degree.
+TP edges connect lower-degree nodes on average because real causal relationships produce specific partial correlations, while FP edges arise from indirect paths through higher-degree hub nodes.
+Forman--Ricci is therefore acting primarily as a \emph{degree-deficit feature} in this setting; the comparable performance of partial correlation and betweenness (both degree-sensitive, neither topological) supports this interpretation.
+The honest headline is that degree-deficit discriminates TP from FP edges in sparse learned DAGs, and Forman--Ricci is one such feature.
+ORC measures optimal transport between neighborhoods (global topology), which carries no discriminative information in these sparse graphs.
+
+\paragraph{External validation on benchmark DAGs.}
+To test whether this degree-deficit interpretation holds beyond random DAGs, we evaluate the same six features on four standard benchmark causal graphs from the bnlearn repository \citep{scutari2010learning}: Asia (8 nodes, 8 edges), Sachs (11 nodes, 17 edges), Insurance (27 nodes, 52 edges), and Alarm (37 nodes, 46 edges). For each graph, we generate linear SEM data ($n = 1{,}000$), learn a DAG via a PC-style algorithm at three significance thresholds ($\alpha \in \{0.001, 0.01, 0.05\}$), and compute AUROC for TP vs.\ FP discrimination across 50 replicates per condition (Table~\ref{tab:bnlearn}).
+
+\begin{table}[t]
+\centering
+\caption{Edge feature AUROC on bnlearn benchmark DAGs (50 replicates, best $\alpha$ per graph/feature). Betweenness centrality exceeds Forman--Ricci on all four graphs (0.60--0.82 vs.\ 0.27--0.38), confirming degree-deficit as the operative mechanism. On Alarm (37 nodes), betweenness achieves 0.820 AUROC driven by hub-and-spoke topology.}
+\label{tab:bnlearn}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Feature} & \textbf{Asia} & \textbf{Sachs} & \textbf{Insurance} & \textbf{Alarm} \\
+\midrule
+Forman--Ricci & $0.270$ & $0.386$ & $0.382$ & $0.379$ \\
+Aug.\ Forman & $0.267$ & $0.429$ & $0.454$ & $0.351$ \\
+Betweenness & $\mathbf{0.641}$ & $\mathbf{0.639}$ & $\mathbf{0.600}$ & $\mathbf{0.820}$ \\
+$|\text{Partial corr}|$ & $0.610$ & $0.425$ & $0.410$ & $0.601$ \\
+Jaccard & $0.505$ & $0.530$ & $0.558$ & $0.498$ \\
+Avg.\ clustering & $0.502$ & $0.555$ & $0.555$ & $0.728$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Across all four benchmark graphs, Forman--Ricci scores below chance (0.27--0.38), while betweenness centrality is the strongest single discriminator (0.60--0.82). On Alarm, betweenness achieves 0.820 AUROC, the highest value in the table, driven by the graph's hub-and-spoke topology where high-betweenness nodes carry the majority of true causal edges. The inversion on structured graphs---Forman--Ricci below chance rather than above---occurs because these DAGs have degree distributions where true edges connect higher-degree hub nodes (e.g., PKC and PKA in Sachs, VENTMACH and VENTALV in Alarm). The degree-deficit formula $\kappa_F = 4 - d(u) - d(v)$ assigns lower curvature to these hub-connected true edges, reversing the discrimination direction relative to random DAGs. This sign reversal confirms that Forman--Ricci acts as a degree feature: its utility depends on whether true edges tend to have lower or higher endpoint degrees than false edges, a property that varies with graph topology. On Insurance, average clustering (0.555) and Jaccard similarity (0.558) approach betweenness (0.600), suggesting that local neighborhood overlap carries discriminative signal in densely connected DAGs.
+
+\paragraph{Dimensionality reduction: PCA destroys treatment effect signal.}
+We simulate $n = 3{,}000$ patients with 3 treatment response subtypes (CATE $\in \{+2.0, -2.5, 0\}$).
+The $4 \times 4$ CATE $\times$ clustering grid (Table~\ref{tab:hte}) shows that PCA clustering fails universally: all four CATE methods and the oracle (ARI $= 0.095$) produce near-random clusters.
+
+\begin{table}[t]
+\centering
+\caption{ARI for treatment subtype recovery ($4 \times 4$ grid, 100 replicates, $n = 3{,}000$).}
+\label{tab:hte}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+ & \textbf{PCA} & \textbf{CATE} & \textbf{CATE+cov} & \textbf{Spectral} \\
+\midrule
+KNN       & $-0.011$ & $0.179$ & $0.225$ & $0.085$ \\
+RF T-learn  & $-0.013$ & $0.238$ & $\mathbf{0.270}$ & $0.097$ \\
+GBM T-learn & $-0.016$ & $0.189$ & $0.264$ & $0.055$ \\
+RF S-learn  & $-0.014$ & $0.175$ & $0.245$ & $0.066$ \\
+\midrule
+Oracle        & $0.095$  & $1.000$ & $0.551$ & $1.000$ \\
+Naive (raw cov) & \multicolumn{4}{c}{$0.218$} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The best estimated combination (RF T-learner $+$ covariate-augmented $K$-means, ARI $= 0.270$) exceeds the naive baseline ($0.218$) by 24\% but falls far short of the oracle ($1.000$).
+The bottleneck is CATE estimation noise at $n = 3{,}000$: the oracle achieves perfect recovery when true CATE is known.
+
+\subsection{Confound detection}
+\label{sec:res-confound}
+
+\paragraph{Partial correlation under complete confounding.}
+With 10 real and 10 confounded biomarkers ($n = 3{,}000$), partial correlation achieves AUROC $= 1.000$ at all sample sizes ($n = 200$--$5{,}000$) with zero variance.
+Confounded biomarkers collapse to partial correlations of $0.001$--$0.033$; real biomarkers retain $0.61$--$0.76$.
+This perfect separation is a property of complete confounding (shared-cause pathways that conditioning fully removes) and would degrade under partial confounding or unobserved confounders.
+
+\paragraph{Bracket-norm audit under acquisition confounds.}
+Four MS imaging biomarkers (iron rim QSM, deep GM atrophy, cortical lesion count, cervical cord CSA; $n = 1{,}500$, 8 sites) all pass: confound leakage $\Delta < 0.05$ for three metrics and $\Delta = -0.19$ (suppressor effect) for iron rim QSM.
+Post-correction partial correlations with sNfL remain significant ($p < 10^{-55}$).
+
+\subsection{MS prerequisites}
+
+Cohort contamination rate is $0.9\%$ (below 2\% threshold), effect estimates are stable across diagnostic stringency ($p = 0.18$), and IRT-derived theta scores correlate more strongly with biological biomarkers than raw EDSS ($r = 0.836$ vs.\ $0.801$ for sNfL).
+
+\subsection{AD simulation consistency check}
+\label{sec:ad}
+\label{sec:res-ad}
+
+To test whether the pipeline's positive results depend on MS-specific simulation parameters, we run the core experiments on simulations using AD neurology with the ATN (amyloid/tau/neurodegeneration) framework \citep{jack2018niaaa}, disease-specific strata, biomarkers, and causal structure. The AD simulation shares the same coefficient patterns as the MS simulation (Tables~\ref{tab:ms-sem},~\ref{tab:ad-sem}); this section tests pipeline consistency, not cross-domain generalization (which rests on the real-data validation in \citealp{tower2026sheaf}).
+AD prerequisites parallel MS: contamination rate $2.4\%$ (below threshold), stable effect estimates across diagnostic stringency ($p = 0.872$), and IRT-derived theta scores correlating with plasma p-tau217 ($r = 0.837$) more strongly than raw MMSE ($r = 0.825$).
+
+\subsubsection{Bracket-norm confound audit}
+
+\begin{table}[t]
+\centering
+\caption{Bracket-norm confound audit across domains. Both diseases show a spectrum from suppressor (negative $\Delta$, worst) to near-zero confound (best). All metrics T3-confirmed.}
+\label{tab:p1-cross}
+\small
+\begin{tabular}{@{}llrrl@{}}
+\toprule
+\textbf{Domain} & \textbf{Metric} & $\boldsymbol{\Delta}$ & \textbf{Anchor} $\boldsymbol{r}$ & \textbf{Note} \\
+\midrule
+\multirow{4}{*}{MS}
+& Iron rim QSM & $-0.188$ & --- & Suppressor (worst) \\
+& Deep GM atrophy & $0.033$ & --- & Near-zero \\
+& Cortical lesion count & $0.040$ & --- & Near-zero \\
+& Cervical cord CSA & $0.036$ & --- & Near-zero \\
+\midrule
+\multirow{4}{*}{AD}
+& Tau PET & $-0.261$ & $0.565$ & Suppressor (worst) \\
+& Amyloid PET (Centiloid) & $0.035$ & $0.781$ & Near-zero (best) \\
+& FDG-PET & $0.020$ & $0.713$ & Near-zero \\
+& Plasma p-tau217 & $0.036$ & $0.774$ & Minimal confound \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The confound spectrum is consistent across both simulated domains (Table~\ref{tab:p1-cross}): both diseases have a worst-case suppressor substrate (iron rim QSM in MS, $\Delta = -0.188$; tau PET in AD, $\Delta = -0.261$) and best-case substrates with negligible leakage.
+The stronger AD suppressor effect is consistent with tau PET off-target binding to ferric iron and MAO-B---the same iron that constitutes an MS progression substrate, connecting the two catalogs beyond structural analogy.
+
+\subsubsection{AD per-edge sheaf DAG adjudication}
+
+The AD DAG (amyloid $\leftrightarrow$ tau $\to$ cognitive decline) is estimated in 8 strata: preclinical A+T$-$, prodromal A+T+, mild AD, moderate AD, APOE4 homozygous, lecanemab-treated, TREM2 risk carrier, and late-stage.
+
+\begin{table}[t]
+\centering
+\caption{Per-edge sheaf $Q$ tests across both simulated domains. The structural pattern is consistent (as expected from the shared generative structure): mechanism edges are heterogeneous, downstream clinical edges are homogeneous.}
+\label{tab:dag-cross}
+\small
+\begin{tabular}{@{}llcccl@{}}
+\toprule
+\textbf{Domain} & \textbf{Edge} & $\boldsymbol{Q}$ & $\boldsymbol{p}$ & \textbf{df} & \textbf{Het.?} \\
+\midrule
+\multirow{4}{*}{MS} & infl $\to$ degen & $1806.9$ & $< 10^{-300}$ & 7 & Yes \\
+& degen $\to$ infl & $1549.6$ & $< 10^{-300}$ & 7 & Yes \\
+& infl $\to$ disab & $7.05$ & $0.423$ & 7 & No \\
+& degen $\to$ disab & $9.98$ & $0.189$ & 7 & No \\
+\midrule
+\multirow{4}{*}{AD} & amyloid $\to$ tau & $1526.4$ & $< 10^{-300}$ & 7 & Yes \\
+& tau $\to$ amyloid & $983.6$ & $< 10^{-300}$ & 7 & Yes \\
+& amyloid $\to$ cog & $5.82$ & $0.561$ & 7 & No \\
+& tau $\to$ cog & $10.81$ & $0.147$ & 7 & No \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The per-edge $Q$ tests recover the same multi-process structure in AD as in MS (Table~\ref{tab:dag-cross}).
+Mechanism edges (amyloid$\leftrightarrow$tau) show massive heterogeneity ($Q > 980$, $p < 10^{-300}$); downstream clinical edges (pathology$\to$cognitive decline) are homogeneous ($Q < 11$, $p > 0.14$).
+The variance ratio between mechanism and downstream edges is 100--200$\times$ in both diseases.
+
+Stratum-level coefficient patterns (all simulated) mirror the MS reversal: preclinical A+T$-$ shows dominant amyloid$\to$tau, while moderate AD reverses this; lecanemab suppresses amyloid$\to$tau paralleling BTK inhibition in MS (Appendix~\ref{app:sim-params}, Table~\ref{tab:ad-sem}).
+Both diseases reach $H^1 \neq 0$ independently.
+
+\subsubsection{$H^1$ effect-modifier classification}
+
+The $H^1$ classifier achieves 100\% accuracy on 7 AD modifier pairs, with the same three-order-of-magnitude bimodal gap as MS (transport: $Q < 7$, $p > 0.07$; non-transport: $Q > 1700$, $p < 10^{-300}$).
+Each MS modifier maps to a direct AD analogue: HLA$\times$EBV to APOE4$\times$amyloid (dominant genetic risk modifier), EBV necessity to TREM2 causal risk (MR positive control), vitamin~D to IL-6 systemic null (negative control).
+Scale invariance improves under quantile normalization in both domains (MS: $0.517 \to 0.346$; AD: $0.734 \to 0.695$) but neither reaches the $0.30$ target.
+
+\subsubsection{Cross-domain summary}
+
+Every structural finding is consistent across the two simulations (Table~\ref{tab:cross-summary}), as expected given the shared generative structure.
+
+\begin{table}[t]
+\centering
+\caption{Cross-domain simulation consistency. All findings match across the MS and AD simulations, which share generative structure (Tables~\ref{tab:ms-sem},~\ref{tab:ad-sem}); cross-domain generalization evidence comes from the 61-pair real-data validation \citep{tower2026sheaf}.}
+\label{tab:cross-summary}
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Finding} & \textbf{MS} & \textbf{AD} & \textbf{Same?} \\
+\midrule
+Cohomological verdict & $H^1 \neq 0$ & $H^1 \neq 0$ & Yes \\
+Per-edge pattern & Mech het., disab hom. & Mech het., cog hom. & Yes \\
+$Q$ ratio (mech/downstream) & $\sim\!200\times$ & $\sim\!150\times$ & Yes \\
+Modifier classification & 7/7 correct & 7/7 correct & Yes \\
+Bimodal gap & 3 orders of magnitude & 3 orders of magnitude & Yes \\
+Confound spectrum & Suppressor to near-zero & Suppressor to near-zero & Yes \\
+Drug dissociation & BTK: infl suppressed & Lecanemab: amyloid cleared & Yes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The only differences are domain-specific labels (inflammation/degeneration vs.\ amyloid/tau) and biological anchors (sNfL vs.\ p-tau217).
+Three shared physical nodes connect the catalogs beyond analogy: iron (MS progression substrate and tau PET off-target binding source in AD), NfL (biological anchor in MS, neurodegeneration-axis biomarker in AD), and GFAP (progression-associated astrocytic marker in both diseases).
+
+%% ==============================================================
+\section{Real-data validation}
+\label{sec:realdata}
+%% ==============================================================
+
+The simulation experiments above establish boundary conditions under controlled data-generating processes. A companion paper \citep{tower2026sheaf} validates the positive sheaf result (Condition~2) on 61 published Mendelian randomization pairs across five clinical domains (MS, AD, cardiometabolic disease, cancer, psychiatric disorders), achieving 85.2\% accuracy with zero false positives. Per-edge sheaf $Q$ tests on ADNI longitudinal data recover a three-way DAG classification richer than the binary simulation prediction. We refer readers to that paper for the full real-data analysis, power calculations, and sensitivity checks.
+
+% [Real-data MR tables, figures, power analysis, sensitivity analysis, ADNI DAG,
+%  confound audit, and real-data summary removed — see companion paper (Tower, 2026)]
+%% ==============================================================
+\section{Discussion}
+\label{sec:discussion}
+%% ==============================================================
+
+\subsection{The boundary}
+
+The three conditions we identify---subspace-valued data, cyclic constraints, edge-specific heterogeneity---are sufficient conditions, not a closed characterization.
+They share a common structure: each creates information that standard scalar/pairwise/global methods cannot access.
+Holonomy accumulates coherently around cycles ($\sqrt{m}$ signal growth) in a way that pairwise comparisons cannot replicate.
+Per-edge tests avoid the variance dilution that plagues global tests on heterogeneous DAGs.
+Subspace-valued data carry covariance structure that scalar projections discard.
+
+The conditions are also \emph{testable in advance}: a practitioner can determine before running geometric analyses whether their data are multivariate, whether consistency constraints span cycles, and whether heterogeneity is plausibly edge-specific.
+When none of these conditions hold, standard tools (Cochran's $Q$, partial correlation, $K$-means) are sufficient and simpler.
+
+\subsection{Information-geometric interpretation}
+\label{sec:info-geom}
+
+The sheaf framework admits a natural reading in information geometry, connecting the three boundary conditions to the Fisher--Rao metric, KL divergence, and geometric phase on statistical manifolds.
+
+\paragraph{Sheaf $Q$ as Fisher information norm.}
+Each stratum $k$ defines a local statistical model $P_k = \mathcal{N}(\hat\beta_k, \mathrm{se}_k^2)$ for the causal effect.
+The Fisher information at $P_k$ is $I_k = 1/\mathrm{se}_k^2$, and the precision weights $w_k = I_k$ in the $Q$ statistic are Fisher information values.
+The sheaf Laplacian test statistic $Q = \sum_k w_k (\hat\beta_k - \hat\beta_{\mathrm{pool}})^2$ is therefore the squared norm of the obstruction cocycle $(\hat\beta_k - \hat\beta_{\mathrm{pool}})$ measured in the Fisher--Rao metric on the product manifold $\prod_k P_k$.
+Under the null (all strata share a common parameter $\beta_0$), the obstruction vanishes and $Q \sim \chi^2_{K-1}$; under the alternative, $Q$ measures the total information-weighted divergence of local models from their global consensus.
+
+This identification is exact on scalar stalks.
+The $W$-weighted Schur complement that reduces the sheaf Laplacian to Cochran's $Q$ (Appendix~C of \citealp{tower2026sheaf}) is the Fisher information matrix of the edge-parameterized model, and the Schur complement projects out the nuisance parameter (the global mean) to obtain the profile Fisher information for the heterogeneity parameters.
+
+\paragraph{KL divergence decomposition.}
+For Gaussian stalks, the KL divergence between stratum $k$ and the pooled model is
+\begin{equation}\label{eq:kl-stratum}
+D_{\mathrm{KL}}(P_k \| P_{\mathrm{pool}}) = \frac{w_k}{2}(\hat\beta_k - \hat\beta_{\mathrm{pool}})^2 + \frac{1}{2}\left(\frac{\mathrm{se}_k^2}{\mathrm{se}_{\mathrm{pool}}^2} - 1 - \log \frac{\mathrm{se}_k^2}{\mathrm{se}_{\mathrm{pool}}^2}\right).
+\end{equation}
+The first term is the contribution of stratum $k$ to the $Q$ statistic (divided by 2); the second captures variance mismatch.
+When standard errors are approximately equal across strata, $Q \approx 2 \sum_k D_{\mathrm{KL}}(P_k \| P_{\mathrm{pool}})$: Cochran's $Q$ is twice the total KL divergence of local models from their consensus.
+The boundary between Condition~2 (edge-specific heterogeneity) and global testing corresponds to whether this KL budget is concentrated on specific edges of the DAG or diffused across all edges---a question of information distribution, not information magnitude.
+
+\paragraph{Geometric phase on the Grassmannian.}
+For subspace-valued stalks (Condition~1), sections live on $\Gr(k,d)$, which carries a natural Riemannian structure.
+This structure has an information-geometric interpretation: $\Gr(k,d)$ is the parameter space of centered $k$-dimensional Gaussian models embedded in $\R^d$, and the canonical metric on $\Gr(k,d)$ is the Fisher--Rao metric of this family \citep{amari2016information}.
+Parallel transport of a subspace around a cycle of population transformations is parallel transport of the corresponding Fisher--Rao model, and the Berry phase (Eq.~\ref{eq:berry}) is a geometric phase in the statistical manifold.
+
+The holonomy $\|\Phi - I_k\|_F \neq 0$ means the cycle of transformations introduces a net rotation in model space that pairwise comparisons cannot detect---exactly the condition under which local Fisher information fails to capture global structure.
+The detection boundary at $\geq 500$ subjects per site (Table~\ref{tab:boundary}) is a sample-size threshold for estimating the Fisher--Rao connection with sufficient precision that its holonomy is distinguishable from estimation noise.
+This interpretation explains why PCA-based subspace estimation works for holonomy detection: PCA estimates the maximum-likelihood Gaussian subspace, which is the sufficient statistic for the Fisher--Rao geometry.
+
+\paragraph{Entropy of the weight distribution.}
+The normalized weights $\pi_k = w_k / \sum_j w_j$ define a probability distribution over strata.
+Its Shannon entropy $H(\boldsymbol{\pi}) = -\sum_k \pi_k \log \pi_k$ measures how evenly Fisher information is distributed across strata.
+When $H(\boldsymbol{\pi})$ is low (one stratum dominates), the $Q$ test is effectively a comparison of the dominant stratum against the rest, and its sensitivity to heterogeneity in the remaining strata is reduced.
+The leave-one-out instability observed in the companion paper's MR validation \citep{tower2026sheaf}---where 9 of 22 non-transport pairs flip classification when the most informative stratum is dropped---reflects exactly this regime: low entropy of $\boldsymbol{\pi}$ concentrates the $Q$ statistic in a single stratum, making the test fragile.
+Reporting $H(\boldsymbol{\pi})$ alongside $Q$ and $I^2$ would provide a practical diagnostic for this failure mode.
+
+\paragraph{Summary.}
+The three boundary conditions map onto information-geometric primitives.
+Condition~1 (subspace-valued data) requires the Fisher--Rao manifold to have dimension $> 1$ so that geometric phase can accumulate.
+Condition~2 (edge-specific heterogeneity) requires the KL divergence budget to be concentrated on specific DAG edges rather than distributed globally.
+Condition~3 (method-specific failure modes) arises when the information-geometric structure of the feature space misaligns with the classification task---degree-deficit features capture Fisher information about node connectivity, and whether that information discriminates true from false edges depends entirely on the graph's degree distribution.
+The boundary conditions are thus conditions on the information geometry of the statistical model, expressed in the language of sheaves.
+
+\subsection{Curvature selection and degree-dependence}
+
+The ORC/Forman--Ricci contrast illustrates that the ``right'' curvature depends on which structural property discriminates the classes of interest, and that Forman--Ricci's success here is largely a degree-deficit effect.
+The formula $\kappa_F = 4 - d(u) - d(v)$ makes Forman--Ricci a function of endpoint degrees; comparable performance from partial correlation magnitude ($0.657$) and betweenness ($0.610$)---both degree-sensitive, neither topological---confirms that the discriminative signal is degree asymmetry, not curvature \emph{per se}.
+
+Degree-dependence is a liability or an asset depending on the task.
+For TP/FP edge validation, the degree asymmetry between true causal edges (specific partial correlations, lower-degree endpoints) and spurious edges (indirect paths through hubs) is the relevant signal, and Forman--Ricci captures it.
+For community or hub/bridge separation tasks, degree-dependence confounds curvature with centrality, making Forman--Ricci unreliable---a setting where ORC's transport-based definition may be more appropriate.
+The lesson is task-specific: practitioners should ask which structural property separates their classes of interest and choose a curvature whose formula is sensitive to that property.
+The bnlearn benchmark results (Table~\ref{tab:bnlearn}) reinforce this.
+Forman--Ricci is \emph{anti-discriminative} on all four benchmark DAGs (AUROC 0.27--0.38): true edges connect higher-degree hub nodes in these structured graphs, so the degree-deficit formula assigns them \emph{lower} curvature than false edges, reversing the discrimination direction.
+Betweenness centrality, which correlates with both degree and structural importance, remains the strongest single discriminator across all four graphs (AUROC 0.60--0.82), peaking at 0.820 on Alarm's 37-node hub-and-spoke topology.
+The contrast is a negative result for curvature-based edge validation: Forman--Ricci captures degree asymmetry, but whether that asymmetry favors true or false edges depends entirely on the graph's degree distribution---a property that varies across topologies and cannot be assumed \emph{a priori}.
+
+\subsection{Simulation consistency}
+
+The AD simulation tests whether the boundary conditions are artifacts of MS-specific simulation design.
+The same structural signature---heterogeneous mechanism edges, homogeneous downstream edges, $H^1 \neq 0$, clean bimodal transport/non-transport separation---emerges from simulations of a disease with distinct etiology (amyloid cascade vs.\ autoimmune demyelination), distinct genetic architecture (APOE4 vs.\ HLA), distinct biomarker modalities (PET/plasma vs.\ MRI/serum), and distinct clinical endpoints (cognitive decline vs.\ physical disability).
+
+A transparency note: the MS and AD simulations use the same \emph{structural pattern} of coefficient variation (mechanism edges with $100\times$ higher variance than downstream edges; $\gamma$ values for $H^1$ classification matched across domains; see Appendix~\ref{app:sim-params}, Tables~\ref{tab:ms-sem} and~\ref{tab:ad-sem}).
+The simulation therefore demonstrates consistency under the same data-generating structure with different labels---a necessary sanity check rather than independent cross-domain evidence. A companion paper \citep{tower2026sheaf} provides real-data validation on 61 published MR pairs across five clinical domains.
+
+The boundary conditions themselves are mathematical: the methods test geometric and cohomological properties of data (subspace structure, cyclic consistency, edge-specific variance), and those properties are preserved across diseases whenever the underlying causal architecture contains DAGs with heterogeneous feedback loops and stable downstream paths.
+
+
+\subsection{Limitations}
+
+The simulations are existence demonstrations with planted structure, not realistic clinical models: confounding is complete (all-or-nothing), SEMs use random DAGs without domain structure, HTE subtypes are well-separated, and heterogeneity patterns (mechanism-edge variance $100\times$ larger than downstream) are set by design.
+The MS and AD simulations share identical coefficient values with different labels (Tables~\ref{tab:ms-sem} and~\ref{tab:ad-sem}); the AD simulation confirms pipeline consistency on matched inputs, not cross-domain generalization.
+Real clinical data present partial confounding, measurement error, missing data, and continuous rather than discrete variation.
+All drug-effect coefficients (BTK, siponimod, lecanemab) are simulated values calibrated to clinical expectations, not estimated from trial data.
+
+The cocycle dose-response shows substantial noise at small radii, suggesting that larger $m$ or repeated trials would be needed for reliable dose-response estimation.
+The confound audit recovers the correct metric ordering but cannot detect suppressor effects from published additive variance decompositions; detecting non-additive confounding requires individual-level multivariate data.
+
+The Grassmannian holonomy boundary condition has partial real-data support: the ABIDE test confirms that pairwise subspace distances are substantial (mean geodesic distance $1.57$ across 20 sites) and that holonomy is non-significant when all sites fall below the detection threshold ($n \leq 175$ vs.\ the required $\geq 500$).
+A positive detection---observing significant holonomy that decreases after ComBat harmonization \citep{fortin2018harmonization}---requires a cohort with larger per-site enrollment.
+ADNI ($60+$ sites), UK~Biobank imaging ($\sim\!5{,}000$ subjects at each of 3 sites), or the largest ENIGMA sites provide natural test cases.
+
+%% ==============================================================
+\section{Conclusion}
+\label{sec:conclusion}
+%% ==============================================================
+
+Geometric and topological methods help causal inference under three identifiable conditions: subspace-valued data, cyclic consistency constraints, and edge-specific heterogeneity.
+Absent these conditions, they reduce to Cochran's $Q$, partial correlation, or fail at tasks where simpler alternatives succeed.
+The boundary itself is the primary contribution: it tells practitioners when to reach for geometric tools and when standard statistics suffice.
+The conditions are testable in advance (Figure~\ref{fig:boundary}), making the decision procedure practical rather than retrospective.
+
+Grassmannian holonomy detects global inconsistency invisible to all pairwise and scalar alternatives, with a calibrated power boundary at $\geq 500$ subjects per site confirmed by the ABIDE null result.
+Per-edge sheaf $Q$ tests recover planted DAG structure that global tests miss.
+Forman--Ricci curvature acts as a degree-deficit feature whose discrimination direction depends on graph topology, and PCA destroys treatment effect signal regardless of CATE estimator quality.
+External curvature validation on four benchmark DAGs confirms the degree-deficit interpretation: betweenness centrality dominates Forman--Ricci on all four graphs.
+A companion paper \citep{tower2026sheaf} validates the positive sheaf result on 61 published Mendelian randomization pairs across five clinical domains.
+
+\subsubsection*{Broader Impact Statement}
+This work characterizes when geometric and topological methods provide genuine advantages over standard statistics for causal inference. The boundary conditions are diagnostic: they tell practitioners when to reach for complex methods and when simpler alternatives suffice. Misapplication of geometric methods to data that do not satisfy the boundary conditions risks false confidence in heterogeneity assessments. The negative results (curvature sign-dependence on topology, PCA destroying CATE signal) serve as explicit warnings against uncritical adoption.
+
+\subsubsection*{Reproducibility Statement}
+All simulation code, analysis pipelines, and figure-generation scripts are available at \url{https://github.com/elliottower/epidemiology-boundary-conditions}. Simulation parameters are fully specified in Appendix~\ref{app:sim-params}. Random seeds are fixed for all stochastic simulations.
+
+\bibliographystyle{unsrtnat}
+\bibliography{references_B}
+
+%% ==============================================================
+\appendix
+%% ==============================================================
+
+\section{Simulation parameters}
+\label{app:sim-params}
+
+\subsection{Structural equation models}
+
+Both the MS and AD simulations use linear SEMs with disease-specific DAGs, stratum-dependent coefficients, and additive Gaussian noise ($\sigma = 0.10$). Sample sizes are $n = 3{,}000$ per stratum unless otherwise noted.
+
+\paragraph{MS DAG.}
+The MS DAG has 3 nodes (inflammation, degeneration, disability) with 4 directed edges: infl$\to$degen, degen$\to$infl (feedback), infl$\to$disab, degen$\to$disab. Edge coefficients are drawn from 8 strata (Table~\ref{tab:ms-sem}).
+
+\begin{table}[h]
+\centering
+\caption{MS SEM coefficients across 8 disease strata. Mechanism edges (infl$\leftrightarrow$degen) vary dramatically; downstream edges (pathology$\to$disab) are stable.}
+\label{tab:ms-sem}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Stratum} & \textbf{I$\to$D} & \textbf{D$\to$I} & \textbf{I$\to$disab} & \textbf{D$\to$disab} \\
+\midrule
+Early RRMS & $0.404$ & $-0.001$ & $0.355$ & $0.380$ \\
+Late RRMS & $0.300$ & $0.100$ & $0.360$ & $0.385$ \\
+SPMS early & $0.200$ & $0.200$ & $0.365$ & $0.390$ \\
+SPMS late & $0.100$ & $0.300$ & $0.370$ & $0.395$ \\
+PPMS & $-0.008$ & $0.385$ & $0.375$ & $0.400$ \\
+BTK inhibitor & $0.002$ & $-0.001$ & $0.360$ & $0.385$ \\
+Anti-CD20 & $0.050$ & $0.010$ & $0.355$ & $0.380$ \\
+Siponimod & $0.100$ & $0.200$ & $0.365$ & $0.386$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{AD DAG.}
+The AD DAG has 3 nodes (amyloid, tau, cognition) with 4 directed edges: amyloid$\to$tau, tau$\to$amyloid (feedback), amyloid$\to$cog, tau$\to$cog. Edge coefficients are drawn from 8 strata (Table~\ref{tab:ad-sem}).
+
+\begin{table}[h]
+\centering
+\caption{AD SEM coefficients across 8 disease strata. Mechanism edges (amyloid$\leftrightarrow$tau) vary; downstream edges (pathology$\to$cog) are stable. Note: these coefficients share the same values as the MS simulation (Table~\ref{tab:ms-sem}) with different labels; this is a consistency check, not an independent replication.}
+\label{tab:ad-sem}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Stratum} & \textbf{A$\to$T} & \textbf{T$\to$A} & \textbf{A$\to$cog} & \textbf{T$\to$cog} \\
+\midrule
+Preclinical A+T$-$ & $0.404$ & $-0.001$ & $0.355$ & $0.380$ \\
+Prodromal A+T+ & $0.300$ & $0.100$ & $0.360$ & $0.385$ \\
+Mild AD & $0.200$ & $0.200$ & $0.365$ & $0.390$ \\
+Moderate AD & $0.002$ & $0.408$ & $0.370$ & $0.395$ \\
+APOE4 homozygous & $0.292$ & $0.285$ & $0.375$ & $0.400$ \\
+Lecanemab-treated & $0.002$ & $-0.001$ & $0.360$ & $0.385$ \\
+TREM2 carrier & $0.350$ & $0.050$ & $0.355$ & $0.380$ \\
+Late-stage & $0.100$ & $0.300$ & $0.365$ & $0.386$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{$H^1$ classification parameters}
+
+For the $H^1$ effect-modifier classification, each mechanism--modifier pair is assigned an interaction strength $\gamma$, which controls the coefficient of the interaction term in the SEM. Transport pairs use $\gamma \leq 0.10$ (weak or absent interaction); non-transport pairs use $\gamma \geq 0.40$ (strong interaction). Each pair is simulated with $K = 8$ strata, $n = 3{,}000$ per stratum. The Q test uses $\alpha = 0.05$.
+
+\subsection{Curvature simulation}
+
+Edge validation uses random DAGs with $p = 20$ variables. SEMs are either linear ($X_j = \sum_{i \in \mathrm{pa}(j)} \beta_{ij} X_i + \epsilon_j$) or nonlinear ($X_j = \tanh(\cdot)$), with $\beta_{ij} \sim \mathrm{Uniform}(0.3, 0.8)$ and $\epsilon_j \sim \mathcal{N}(0, 1)$. Graphs are learned via PC algorithm with three significance thresholds (strict: $\alpha = 0.001$, medium: $\alpha = 0.01$, loose: $\alpha = 0.05$). Each of the 6 conditions (2 SEM types $\times$ 3 thresholds) uses 60 independent graphs ($n = 1{,}000$ observations each).
+
+\subsection{Cocycle obstruction}
+
+The Grassmannian cocycle test uses $\Gr(3, 20)$ with $m = 24$ sections forming a closed loop. The linked-column Berry phase construction sets columns 1--2 of $V_0 \in \R^{20 \times 3}$ to rotate toward a shared pair of perpendicular directions with a $\pi/2$ phase offset, at radius $r = 0.5$. Column 3 is fixed. Noise is additive Gaussian with $\sigma = 0.05$ on each matrix entry, followed by Gram--Schmidt re-orthogonalization.
+
+\section{Full curvature feature comparison}
+\label{app:curvature}
+
+Table~\ref{tab:curvature-full} reports the AUROC for each of the 7 edge features across all 6 simulation conditions (2 SEM types $\times$ 3 PC-algorithm thresholds). The main text reports only the best condition per feature.
+
+\begin{table}[h]
+\centering
+\caption{AUROC for TP vs.\ FP edge discrimination across all conditions. Forman--Ricci and partial correlation are consistently above chance; ORC, augmented Forman, and Jaccard are consistently below.}
+\label{tab:curvature-full}
+\small
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+& \multicolumn{3}{c}{\textbf{Linear SEM}} & \multicolumn{3}{c}{\textbf{Nonlinear SEM}} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+\textbf{Feature} & Strict & Med & Loose & Strict & Med & Loose \\
+\midrule
+Forman--Ricci & 0.634 & 0.658 & \textbf{0.677} & 0.621 & 0.645 & 0.668 \\
+$|\text{Partial corr}|$ & 0.612 & 0.638 & 0.650 & 0.625 & 0.641 & \textbf{0.657} \\
+Betweenness & 0.573 & 0.591 & \textbf{0.610} & 0.560 & 0.582 & 0.601 \\
+Avg.\ clustering & 0.530 & 0.548 & 0.561 & 0.535 & 0.555 & \textbf{0.568} \\
+\midrule
+ORC & 0.472 & 0.470 & \textbf{0.466} & 0.480 & 0.475 & 0.471 \\
+Aug.\ Forman & 0.490 & 0.487 & \textbf{0.484} & 0.492 & 0.488 & 0.485 \\
+Jaccard & 0.415 & 0.412 & \textbf{0.408} & 0.420 & 0.415 & 0.410 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two patterns are consistent across conditions. First, the top four features (Forman--Ricci, partial correlation, betweenness, average clustering) all predict TP $>$ FP, while the bottom three (ORC, augmented Forman, Jaccard) predict in the wrong direction ($< 0.50$). Second, looser PC-algorithm thresholds produce higher AUROCs for the top features, because looser thresholds admit more FP edges with higher-degree endpoints, amplifying the degree asymmetry that Forman--Ricci captures.
+
+The nonlinear SEM slightly reduces discrimination for degree-based features (Forman--Ricci: $0.668$ vs.\ $0.677$ at loose threshold) because nonlinear relationships weaken partial correlations, producing more ambiguous graph structure. Partial correlation magnitude is the only feature that improves under nonlinear SEMs at the loose threshold ($0.657$ vs.\ $0.650$), suggesting it captures residual nonlinear signal that the PC algorithm's conditional independence tests partially miss.
+
+\section{bnlearn curvature benchmark details}
+\label{app:bnlearn}
+
+The four benchmark DAGs used in the curvature validation are standard causal graphs from the bnlearn repository \citep{scutari2010learning}: Asia \citep{lauritzen1988local}, Sachs \citep{sachs2005causal}, Insurance \citep{binder1997adaptive}, and Alarm \citep{beinlich1989alarm}. For each graph, we generate linear SEM data ($X_j = \sum_{i \in \mathrm{pa}(j)} \beta_{ij} X_i + \epsilon_j$, $\beta \sim \mathrm{Uniform}(0.3, 0.8)$ with random sign, $\epsilon \sim \mathcal{N}(0,1)$, $n = 1{,}000$) and learn a DAG via a PC-style algorithm using partial correlation CI tests with Fisher $z$-transform, conditioning sets up to size 2, and v-structure orientation. Edge labels are assigned by skeleton match: a learned edge is TP if it exists (in either direction) in the true DAG, FP otherwise. AUROC is computed via the Mann--Whitney $U$ statistic across 50 replicates per (graph, $\alpha$) combination.
+
+The key finding is that the TP/FP discrimination direction depends on graph topology. On random DAGs (main text), true edges tend to connect lower-degree nodes, so Forman--Ricci ($\kappa_F = 4 - d(u) - d(v)$) assigns higher curvature to TP edges (AUROC $> 0.50$). On the benchmark DAGs, hub nodes (e.g., PKC and PKA in Sachs, with 5+ outgoing causal edges each) carry many true edges, so TP edges have \emph{higher} endpoint degrees and Forman--Ricci assigns them \emph{lower} curvature (AUROC $< 0.50$). Betweenness centrality, which correlates with both degree and structural importance, remains the most robust discriminator across both random and structured topologies.
+
+\end{document}
