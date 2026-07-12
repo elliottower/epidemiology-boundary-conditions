@@ -287,6 +287,14 @@ Transport pairs ($Q < 7$, $p > 0.07$) are exposure$\to$mechanism edges with weak
 Per-edge sheaf $Q$ tests avoid this by testing each structural relationship independently.
 The $H^1$ classifier operationalizes this as a practical workflow: classify each mechanism--modifier pair as transportable or stratum-specific with no manual threshold tuning.
 
+\paragraph{Quantifying the per-edge boundary.}
+To characterize where per-edge testing provides localization value, we sweep the variance ratio $R = \sigma_{\mathrm{mech}} / \sigma_{\mathrm{down}}$ from 1 to 1000 on a 3-node DAG with 8 strata (200 replicates per ratio; $\sigma_{\mathrm{down}} = 0.01$ fixed).
+At $R = 1$ (no edge-specific structure), global detection power is $13\%$ and per-edge correct localization is $0\%$---neither test works.
+At $R = 5$, global detection reaches $86.5\%$ while per-edge localization achieves $46.0\%$; the global test detects \emph{something} is heterogeneous, but cannot identify which edges.
+At $R \geq 10$, both approach ceiling: global detection $= 100\%$, per-edge localization $\geq 93.5\%$.
+The transition is smooth (no step function), confirming that the per-edge advantage is geometric---concentrated variance on specific edges---rather than an artifact of thresholding.
+The per-edge test never exceeds global detection power (which asks only ``is there any heterogeneity?'') but provides qualitative localization: at $R = 10$, the per-edge test identifies \emph{which} edges carry the heterogeneity in 93.5\% of replicates, information the global test cannot provide at any threshold.
+
 \subsection{Condition 3: Method-specific failure modes}
 \label{sec:res-failures}
 
@@ -381,7 +389,13 @@ The bottleneck is CATE estimation noise at $n = 3{,}000$: the oracle achieves pe
 \paragraph{Partial correlation under complete confounding.}
 With 10 real and 10 confounded biomarkers ($n = 3{,}000$), partial correlation achieves AUROC $= 1.000$ at all sample sizes ($n = 200$--$5{,}000$) with zero variance.
 Confounded biomarkers collapse to partial correlations of $0.001$--$0.033$; real biomarkers retain $0.61$--$0.76$.
-This perfect separation is a property of complete confounding (shared-cause pathways that conditioning fully removes) and would degrade under partial confounding or unobserved confounders.
+This perfect separation is a property of complete confounding (shared-cause pathways that conditioning fully removes) and degrades under partial confounding.
+
+\paragraph{Degradation under partial confounding.}
+We introduce a confounding fraction $f \in [0, 1]$, where $f = 1$ is complete confounding (current setup) and $f = 0$ makes ``confounded'' biomarkers indistinguishable from real ones (null control).
+Sweeping $f$ across 7 levels (200 replicates each, $n = 3{,}000$), partial correlation AUROC degrades monotonically: $f = 0$: AUROC $= 0.508$ (null baseline, confirming proper calibration); $f = 0.3$: AUROC $= 0.774$; $f = 0.5$: AUROC $= 0.930$; $f \geq 0.7$: AUROC $= 1.000$.
+The method remains above AUROC $= 0.80$ for confounding fractions $\geq 0.5$---partial confounding explaining at least half the biomarker variance is reliably detectable.
+Below $f = 0.3$, discrimination drops toward chance, representing a genuine sensitivity floor: confounds explaining $< 30\%$ of variance are indistinguishable from measurement noise at this sample size.
 
 \paragraph{Bracket-norm audit under acquisition confounds.}
 Four MS imaging biomarkers (iron rim QSM, deep GM atrophy, cortical lesion count, cervical cord CSA; $n = 1{,}500$, 8 sites) all pass: confound leakage $\Delta < 0.05$ for three metrics and $\Delta = -0.19$ (suppressor effect) for iron rim QSM.

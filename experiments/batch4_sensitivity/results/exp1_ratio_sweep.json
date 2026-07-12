@@ -1,0 +1,85 @@
+{
+  "experiment": "heterogeneity_ratio_sweep",
+  "results": [
+    {
+      "ratio": 1,
+      "sigma_mech": 0.01,
+      "sigma_down": 0.01,
+      "global_power": 0.13,
+      "peredge_correct": 0.0,
+      "peredge_advantage": -0.13
+    },
+    {
+      "ratio": 2,
+      "sigma_mech": 0.02,
+      "sigma_down": 0.01,
+      "global_power": 0.225,
+      "peredge_correct": 0.005,
+      "peredge_advantage": -0.22
+    },
+    {
+      "ratio": 5,
+      "sigma_mech": 0.05,
+      "sigma_down": 0.01,
+      "global_power": 0.865,
+      "peredge_correct": 0.46,
+      "peredge_advantage": -0.405
+    },
+    {
+      "ratio": 10,
+      "sigma_mech": 0.1,
+      "sigma_down": 0.01,
+      "global_power": 1.0,
+      "peredge_correct": 0.935,
+      "peredge_advantage": -0.065
+    },
+    {
+      "ratio": 20,
+      "sigma_mech": 0.2,
+      "sigma_down": 0.01,
+      "global_power": 1.0,
+      "peredge_correct": 0.975,
+      "peredge_advantage": -0.025
+    },
+    {
+      "ratio": 50,
+      "sigma_mech": 0.5,
+      "sigma_down": 0.01,
+      "global_power": 1.0,
+      "peredge_correct": 0.91,
+      "peredge_advantage": -0.09
+    },
+    {
+      "ratio": 100,
+      "sigma_mech": 1.0,
+      "sigma_down": 0.01,
+      "global_power": 1.0,
+      "peredge_correct": 0.945,
+      "peredge_advantage": -0.055
+    },
+    {
+      "ratio": 200,
+      "sigma_mech": 2.0,
+      "sigma_down": 0.01,
+      "global_power": 1.0,
+      "peredge_correct": 0.96,
+      "peredge_advantage": -0.04
+    },
+    {
+      "ratio": 500,
+      "sigma_mech": 5.0,
+      "sigma_down": 0.01,
+      "global_power": 1.0,
+      "peredge_correct": 0.96,
+      "peredge_advantage": -0.04
+    },
+    {
+      "ratio": 1000,
+      "sigma_mech": 10.0,
+      "sigma_down": 0.01,
+      "global_power": 1.0,
+      "peredge_correct": 0.95,
+      "peredge_advantage": -0.05
+    }
+  ]
+}

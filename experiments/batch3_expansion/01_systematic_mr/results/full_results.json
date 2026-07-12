@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "timestamp": "2026-07-02T10:39:20.557912",
+    "timestamp": "2026-07-12T15:20:45.401416",
     "alpha": 0.05,
     "n_pairs": 61,
-    "input_file": "/Users/elliottower/Documents/GitHub/causal-inference-neuro-epidemiology/geometry/paper_clinical/batch3_expansion/01_systematic_mr/data/pairs_curated.json"
+    "input_file": "/Users/elliottower/Documents/GitHub/epidemiology-boundary-conditions/experiments/batch3_expansion/01_systematic_mr/data/pairs_curated.json"
   },
   "per_pair": {
     "HLA_DRB1_MS_risk": {

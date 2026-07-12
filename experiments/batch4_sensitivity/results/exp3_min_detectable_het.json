@@ -1,0 +1,781 @@
+{
+  "experiment": "minimum_detectable_heterogeneity",
+  "empirical_se": {
+    "median": 0.06,
+    "q25": 0.04,
+    "q75": 0.08
+  },
+  "results": [
+    {
+      "K": 3,
+      "se_used": 0.06,
+      "tau_80": 0.21416666666666667,
+      "tau_80_over_se": 3.5694444444444446,
+      "power_curve": [
+        {
+          "tau": 0.01,
+          "power": 0.064
+        },
+        {
+          "tau": 0.030416666666666668,
+          "power": 0.0945
+        },
+        {
+          "tau": 0.050833333333333335,
+          "power": 0.1715
+        },
+        {
+          "tau": 0.07125,
+          "power": 0.287
+        },
+        {
+          "tau": 0.09166666666666666,
+          "power": 0.395
+        },
+        {
+          "tau": 0.11208333333333333,
+          "power": 0.53
+        },
+        {
+          "tau": 0.1325,
+          "power": 0.5865
+        },
+        {
+          "tau": 0.15291666666666667,
+          "power": 0.676
+        },
+        {
+          "tau": 0.17333333333333334,
+          "power": 0.7215
+        },
+        {
+          "tau": 0.19375,
+          "power": 0.7655
+        },
+        {
+          "tau": 0.21416666666666667,
+          "power": 0.8105
+        },
+        {
+          "tau": 0.23458333333333334,
+          "power": 0.845
+        },
+        {
+          "tau": 0.255,
+          "power": 0.855
+        },
+        {
+          "tau": 0.27541666666666664,
+          "power": 0.8755
+        },
+        {
+          "tau": 0.29583333333333334,
+          "power": 0.893
+        },
+        {
+          "tau": 0.31625000000000003,
+          "power": 0.901
+        },
+        {
+          "tau": 0.33666666666666667,
+          "power": 0.911
+        },
+        {
+          "tau": 0.3570833333333333,
+          "power": 0.912
+        },
+        {
+          "tau": 0.3775,
+          "power": 0.9325
+        },
+        {
+          "tau": 0.3979166666666667,
+          "power": 0.9305
+        },
+        {
+          "tau": 0.41833333333333333,
+          "power": 0.936
+        },
+        {
+          "tau": 0.43875,
+          "power": 0.9455
+        },
+        {
+          "tau": 0.45916666666666667,
+          "power": 0.953
+        },
+        {
+          "tau": 0.47958333333333336,
+          "power": 0.9535
+        },
+        {
+          "tau": 0.5,
+          "power": 0.9615
+        }
+      ]
+    },
+    {
+      "K": 4,
+      "se_used": 0.06,
+      "tau_80": 0.15291666666666667,
+      "tau_80_over_se": 2.548611111111111,
+      "power_curve": [
+        {
+          "tau": 0.01,
+          "power": 0.0475
+        },
+        {
+          "tau": 0.030416666666666668,
+          "power": 0.1
+        },
+        {
+          "tau": 0.050833333333333335,
+          "power": 0.2065
+        },
+        {
+          "tau": 0.07125,
+          "power": 0.3605
+        },
+        {
+          "tau": 0.09166666666666666,
+          "power": 0.491
+        },
+        {
+          "tau": 0.11208333333333333,
+          "power": 0.6425
+        },
+        {
+          "tau": 0.1325,
+          "power": 0.7075
+        },
+        {
+          "tau": 0.15291666666666667,
+          "power": 0.8005
+        },
+        {
+          "tau": 0.17333333333333334,
+          "power": 0.824
+        },
+        {
+          "tau": 0.19375,
+          "power": 0.8725
+        },
+        {
+          "tau": 0.21416666666666667,
+          "power": 0.912
+        },
+        {
+          "tau": 0.23458333333333334,
+          "power": 0.9145
+        },
+        {
+          "tau": 0.255,
+          "power": 0.9415
+        },
+        {
+          "tau": 0.27541666666666664,
+          "power": 0.953
+        },
+        {
+          "tau": 0.29583333333333334,
+          "power": 0.9595
+        },
+        {
+          "tau": 0.31625000000000003,
+          "power": 0.964
+        },
+        {
+          "tau": 0.33666666666666667,
+          "power": 0.974
+        },
+        {
+          "tau": 0.3570833333333333,
+          "power": 0.9745
+        },
+        {
+          "tau": 0.3775,
+          "power": 0.974
+        },
+        {
+          "tau": 0.3979166666666667,
+          "power": 0.9805
+        },
+        {
+          "tau": 0.41833333333333333,
+          "power": 0.987
+        },
+        {
+          "tau": 0.43875,
+          "power": 0.9825
+        },
+        {
+          "tau": 0.45916666666666667,
+          "power": 0.988
+        },
+        {
+          "tau": 0.47958333333333336,
+          "power": 0.9905
+        },
+        {
+          "tau": 0.5,
+          "power": 0.99
+        }
+      ]
+    }
+  ],
+  "observed_taus": [
+    {
+      "id": "HLA_DRB1_MS_risk",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.22995048352748837,
+      "Q": 23.123645469368743,
+      "p": 3.805606960172181e-05,
+      "above_tau80": true
+    },
+    {
+      "id": "latitude_vitD_MS",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.1792109445443421,
+      "Q": 23.659665427509292,
+      "p": 2.9418855517771014e-05,
+      "above_tau80": true
+    },
+    {
+      "id": "sex_ratio_MS",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.2252709640054444,
+      "Q": 39.82882714200122,
+      "p": 1.1583481285271091e-08,
+      "above_tau80": true
+    },
+    {
+      "id": "EBV_MS_causal",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.6684005201560466,
+      "p": 0.7159103995982983,
+      "above_tau80": false
+    },
+    {
+      "id": "smoking_MS_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.5996801705756929,
+      "p": 0.7409366978871079,
+      "above_tau80": false
+    },
+    {
+      "id": "vitD_MS_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.6258127438231467,
+      "p": 0.7313183813056064,
+      "above_tau80": false
+    },
+    {
+      "id": "BMI_MS_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.3111339676009258,
+      "p": 0.8559297415816605,
+      "above_tau80": false
+    },
+    {
+      "id": "APOE4_AD_risk",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.34442709365355834,
+      "Q": 120.69155292415181,
+      "p": 0.0,
+      "above_tau80": true
+    },
+    {
+      "id": "sex_tau_spread",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.12227389162789848,
+      "Q": 15.748191239734062,
+      "p": 0.001277057680756366,
+      "above_tau80": false
+    },
+    {
+      "id": "ancestry_amyloid_threshold",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.052588378126709315,
+      "Q": 6.605818367644909,
+      "p": 0.08558141500810812,
+      "above_tau80": false
+    },
+    {
+      "id": "age_lecanemab_response",
+      "expected": "non-transport",
+      "k": 3,
+      "tau": 0.11484602905460155,
+      "Q": 4.706823027718549,
+      "p": 0.095044363339849,
+      "above_tau80": false
+    },
+    {
+      "id": "CRP_AD_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.6641592920353981,
+      "p": 0.7174301801220542,
+      "above_tau80": false
+    },
+    {
+      "id": "TREM2_AD_causal",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.6988774288451016,
+      "p": 0.7050837320038401,
+      "above_tau80": false
+    },
+    {
+      "id": "education_AD_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.28269183822931077,
+      "p": 0.8681889365996169,
+      "above_tau80": false
+    },
+    {
+      "id": "BMI_AD_MR",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.13161419157151547,
+      "Q": 14.142936802973974,
+      "p": 0.0027169083501664693,
+      "above_tau80": false
+    },
+    {
+      "id": "T2D_AD_MR",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.007271032795218197,
+      "Q": 3.1287044154069514,
+      "p": 0.37220401177201,
+      "above_tau80": false
+    },
+    {
+      "id": "alcohol_AD_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.4336381269049598,
+      "p": 0.8050756237313501,
+      "above_tau80": false
+    },
+    {
+      "id": "LDL_CAD_MR",
+      "expected": "transport",
+      "k": 4,
+      "tau": 0.0,
+      "Q": 0.7603490911800467,
+      "p": 0.8589255611136626,
+      "above_tau80": false
+    },
+    {
+      "id": "SBP_stroke_MR",
+      "expected": "transport",
+      "k": 4,
+      "tau": 0.0,
+      "Q": 0.7551463588767248,
+      "p": 0.8601625352673447,
+      "above_tau80": false
+    },
+    {
+      "id": "BMI_T2D_MR",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.19797221330170495,
+      "Q": 27.215779678158714,
+      "p": 5.304904083680562e-06,
+      "above_tau80": true
+    },
+    {
+      "id": "alcohol_CAD_MR",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.14026491947534714,
+      "Q": 18.87976264834478,
+      "p": 0.0002895036169229259,
+      "above_tau80": false
+    },
+    {
+      "id": "HDL_CAD_MR",
+      "expected": "transport",
+      "k": 4,
+      "tau": 0.0,
+      "Q": 0.4524042445447012,
+      "p": 0.9292164090791134,
+      "above_tau80": false
+    },
+    {
+      "id": "triglycerides_CAD_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.616438356164384,
+      "p": 0.7347542583301145,
+      "above_tau80": false
+    },
+    {
+      "id": "Lp_a_CAD_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.32954545454545425,
+      "p": 0.8480864291022217,
+      "above_tau80": false
+    },
+    {
+      "id": "smoking_CAD_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.4567420109119246,
+      "p": 0.7958289481759365,
+      "above_tau80": false
+    },
+    {
+      "id": "BMI_CAD_MR",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.1132408891028471,
+      "Q": 13.57469512195122,
+      "p": 0.003545125341169797,
+      "above_tau80": false
+    },
+    {
+      "id": "T2D_CAD_MR",
+      "expected": "transport",
+      "k": 4,
+      "tau": 0.0,
+      "Q": 0.44300144300144295,
+      "p": 0.9312229196062881,
+      "above_tau80": false
+    },
+    {
+      "id": "SBP_CAD_MR",
+      "expected": "transport",
+      "k": 4,
+      "tau": 0.0,
+      "Q": 1.0455512984248616,
+      "p": 0.7902317395100501,
+      "above_tau80": false
+    },
+    {
+      "id": "WHR_T2D_MR",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.14239127808127727,
+      "Q": 10.40594227395541,
+      "p": 0.015412709474832753,
+      "above_tau80": false
+    },
+    {
+      "id": "fasting_glucose_T2D_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.33644636015325674,
+      "p": 0.8451651896027507,
+      "above_tau80": false
+    },
+    {
+      "id": "smoking_lung_cancer_MR",
+      "expected": "transport",
+      "k": 4,
+      "tau": 0.0,
+      "Q": 0.5556059479553892,
+      "p": 0.9065157908944814,
+      "above_tau80": false
+    },
+    {
+      "id": "BMI_breast_cancer_MR",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.14924480475083043,
+      "Q": 22.510495201535505,
+      "p": 5.1072453586598066e-05,
+      "above_tau80": false
+    },
+    {
+      "id": "alcohol_breast_cancer_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.3746877601998334,
+      "p": 0.8291585562271614,
+      "above_tau80": false
+    },
+    {
+      "id": "BMI_colorectal_cancer_MR",
+      "expected": "transport",
+      "k": 4,
+      "tau": 0.0,
+      "Q": 0.4076161228406911,
+      "p": 0.9386647271959979,
+      "above_tau80": false
+    },
+    {
+      "id": "height_prostate_cancer_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.16803278688524592,
+      "p": 0.9194161835751277,
+      "above_tau80": false
+    },
+    {
+      "id": "smoking_bladder_cancer_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.37071317225253303,
+      "p": 0.8308079764277213,
+      "above_tau80": false
+    },
+    {
+      "id": "BMI_endometrial_cancer_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.4915237724084186,
+      "p": 0.7821084335630102,
+      "above_tau80": false
+    },
+    {
+      "id": "BMI_depression_MR",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.0,
+      "Q": 2.5898692810457513,
+      "p": 0.45926836147603856,
+      "above_tau80": false
+    },
+    {
+      "id": "cannabis_schizophrenia_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.40052015604681396,
+      "p": 0.8185178468893293,
+      "above_tau80": false
+    },
+    {
+      "id": "smoking_schizophrenia_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.4392324093816632,
+      "p": 0.8028268600252618,
+      "above_tau80": false
+    },
+    {
+      "id": "education_schizophrenia_MR",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.017180258738522556,
+      "Q": 3.4983660130718954,
+      "p": 0.3209741052732279,
+      "above_tau80": false
+    },
+    {
+      "id": "CRP_depression_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.1274382314694408,
+      "p": 0.9382685073817234,
+      "above_tau80": false
+    },
+    {
+      "id": "BMI_bipolar_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.3224946695095948,
+      "p": 0.8510815430280115,
+      "above_tau80": false
+    },
+    {
+      "id": "vitD_AD_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.4488778054862844,
+      "p": 0.7989643897412755,
+      "above_tau80": false
+    },
+    {
+      "id": "smoking_AD_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.32409381663113007,
+      "p": 0.8504013127114776,
+      "above_tau80": false
+    },
+    {
+      "id": "SBP_AD_MR",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.071394298195638,
+      "Q": 7.203280487804879,
+      "p": 0.06569316829066818,
+      "above_tau80": false
+    },
+    {
+      "id": "physical_activity_AD_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.37053227050655674,
+      "p": 0.830883127133147,
+      "above_tau80": false
+    },
+    {
+      "id": "sleep_duration_AD_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.20522388059701496,
+      "p": 0.9024771205401415,
+      "above_tau80": false
+    },
+    {
+      "id": "IL6_AD_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.284012191742865,
+      "p": 0.8676159675944026,
+      "above_tau80": false
+    },
+    {
+      "id": "APOE2_AD_protective",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.11454360783229278,
+      "Q": 5.9070895219543855,
+      "p": 0.11621906459057352,
+      "above_tau80": false
+    },
+    {
+      "id": "LDL_stroke_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.4005201560468141,
+      "p": 0.8185178468893293,
+      "above_tau80": false
+    },
+    {
+      "id": "urate_gout_MR",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.220700947975791,
+      "Q": 23.829986401719527,
+      "p": 2.7107007922078097e-05,
+      "above_tau80": true
+    },
+    {
+      "id": "IL6R_CAD_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.3295454545454545,
+      "p": 0.8480864291022215,
+      "above_tau80": false
+    },
+    {
+      "id": "alcohol_liver_cirrhosis_MR",
+      "expected": "non-transport",
+      "k": 3,
+      "tau": 0.17068708689485876,
+      "Q": 9.25243852875432,
+      "p": 0.009791709072594301,
+      "above_tau80": false
+    },
+    {
+      "id": "smoking_COPD_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.2508326394671112,
+      "p": 0.882129578176753,
+      "above_tau80": false
+    },
+    {
+      "id": "BMI_kidney_cancer_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.21100705283847826,
+      "p": 0.8998712995177247,
+      "above_tau80": false
+    },
+    {
+      "id": "insulin_resistance_pancreatic_cancer_MR",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.02569154180919632,
+      "Q": 3.1136808182709825,
+      "p": 0.37442776287920565,
+      "above_tau80": false
+    },
+    {
+      "id": "telomere_length_cancer_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.2561768530559167,
+      "p": 0.8797755802050093,
+      "above_tau80": false
+    },
+    {
+      "id": "IL6_MS_MR",
+      "expected": "transport",
+      "k": 3,
+      "tau": 0.0,
+      "Q": 0.1175109282591926,
+      "p": 0.9429373229656203,
+      "above_tau80": false
+    },
+    {
+      "id": "gut_microbiome_MS",
+      "expected": "non-transport",
+      "k": 4,
+      "tau": 0.0,
+      "Q": 2.6500487804878046,
+      "p": 0.44878282871246233,
+      "above_tau80": false
+    },
+    {
+      "id": "BMI_asthma_MR",
+      "expected": "transport",
+      "k": 4,
+      "tau": 0.0,
+      "Q": 0.6855670103092782,
+      "p": 0.8765933689106993,
+      "above_tau80": false
+    }
+  ],
+  "validation": {
+    "detected_above_tau80": "6/13",
+    "missed_below_tau80": "9/9"
+  }
+}

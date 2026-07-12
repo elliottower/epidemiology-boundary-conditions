@@ -383,6 +383,12 @@ The informative comparison is therefore on the sensitivity side: with 3--4 strat
 With 8+ strata (as in simulation), the same effect sizes yield power $> 0.95$; the gap between 85.2\% accuracy (3--4 strata) and $> 99\%$ in simulation is entirely a power effect.
 The expansion from 17 to 61 pairs confirms this: false negatives are explained by power (all nine have power $< 0.38$), and false positives do not occur at any threshold up to $\alpha = 0.30$.
 
+\paragraph{Minimum detectable heterogeneity.}
+With 3--4 strata (our data structure), the $Q$ test achieves 80\% power at between-stratum SD $\tau_{80} = 0.214$ for $K = 3$ ($\tau_{80}/\mathrm{SE} = 3.57$) and $\tau_{80} = 0.153$ for $K = 4$ ($\tau_{80}/\mathrm{SE} = 2.55$), computed via 2{,}000-replicate simulation at the empirical median within-stratum SE of 0.06.
+All nine misclassified pairs have $\tau < \tau_{80}$ for their respective $K$: their between-stratum heterogeneity falls below the detection floor, confirming that misclassification is entirely a power phenomenon.
+Among the 13 correctly detected non-transport pairs, 6 have $\tau > \tau_{80}$ (including APOE4$\to$AD at $\tau = 0.344$, the strongest), while 7 are detected despite $\tau < \tau_{80}$ because their within-stratum SEs are smaller than the median---producing large $Q$ even at moderate $\tau$.
+The practical implication: detecting non-transportability at 80\% power requires between-stratum effect variation $\geq 2.5$--$3.6\times$ the typical within-stratum SE, placing a hard floor on detectable heterogeneity from summary statistics with few strata.
+
 \subsection{Sensitivity analysis}
 \label{sec:realdata-sensitivity}
 
@@ -558,7 +564,12 @@ A natural concern with the $H^1$ classification on ancestry-stratified MR estima
 Two features of the results argue against LD as the sole driver.
 First, all 39 transport pairs also span the same ancestry strata (European, East Asian, African, Hispanic) yet produce uniformly low $Q$ values ($\leq 0.70$); if LD differences alone inflated $Q$, transport pairs would also show elevated heterogeneity.
 Second, the cardiometabolic domain---which involves entirely different genetic architectures from the HLA-dominated neurological pairs---achieves 100\% accuracy (18/18), ruling out an HLA-specific LD artifact as the explanation for the overall result.
-The classifier tests exchangeability of stratum-level estimates, which is a composite hypothesis; disentangling causal effect modification from LD-driven heterogeneity would require individual-level data with explicit LD modeling, which is beyond the scope of this summary-statistic analysis.
+A simulation calibrates the magnitude of LD-attributable heterogeneity.
+We model 4 ancestry strata with constant causal effect ($\beta_{\mathrm{causal}}$ fixed) but varying IV--exposure association strength ($\gamma_k \sim N(\gamma_0, \sigma_{\mathrm{LD}}^2)$) to capture LD-driven denominator variation in Wald ratios.
+Sweeping relative LD variation $\sigma_{\mathrm{LD}}/\gamma_0$ from 0 to 0.30 (500 replicates per level), the resulting $Q$ distribution has median 0.29 at $\sigma_{\mathrm{LD}}/\gamma_0 = 0.05$ and median 0.58 at 0.10---matching the observed transport-pair $Q$ distribution (median 0.40, mean 0.44).
+Even at $\sigma_{\mathrm{LD}}/\gamma_0 = 0.30$ (extreme LD variation, well beyond empirical estimates), only $13.4\%$ of replicates exceed $Q > 7$, and the median is 2.66---far below the observed non-transport median of 12.0.
+The 95th percentile at $\sigma_{\mathrm{LD}}/\gamma_0 = 0.20$ reaches 5.15, still below the non-transport range.
+These results confirm that: (1)~transport-pair $Q$ values are consistent with moderate LD variation ($\sigma_{\mathrm{LD}}/\gamma_0 \approx 0.05$--$0.10$); (2)~non-transport $Q$ values ($\text{median} = 12.0$) are not reachable under any plausible LD-only model, requiring genuine causal effect modification or instrument invalidity to explain.
 
 \subsection{Clinical implications}
 

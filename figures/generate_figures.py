@@ -144,7 +144,7 @@ def fig2_dag():
         "Tau": (0.8, 0.8),
         "Cognition": (6.2, 0.8),
     }
-    node_r = 0.6
+    node_r = 0.85
 
     edge_data = [
         ("Amyloid", "Tau", 23.8, "Mechanism switching", "#C0392B"),
@@ -238,10 +238,12 @@ def fig3_sensitivity():
 # ── Fig 4: Boundary conditions decision diagram ──────────────────────────
 
 def fig4_boundary():
-    fig, ax = plt.subplots(figsize=(10, 3.0))
+    fig, ax = plt.subplots(figsize=(10, 4.2))
     ax.set_xlim(0, 10)
-    ax.set_ylim(0.7, 4.0)
+    ax.set_ylim(0.3, 5.0)
     ax.axis("off")
+
+    box_h = 0.55
 
     def draw_box(x, y, w, h, text, color, fontsize=9, bold=False):
         rect = mpatches.FancyBboxPatch(
@@ -250,7 +252,7 @@ def fig4_boundary():
             edgecolor="#2C3E50", linewidth=1.5)
         ax.add_patch(rect)
         fw = "bold" if bold else "normal"
-        ax.text(x, y, text, ha="center", va="center", fontsize=fontsize,
+        ax.text(x, y, text, ha="center", va="center", fontsize=9,
                 fontweight=fw, color="#2C3E50")
 
     def arrow(x0, y0, x1, y1, label=""):
@@ -261,36 +263,42 @@ def fig4_boundary():
             ax.text(mx - 0.22, my, label, fontsize=8, color="#666666",
                     ha="center", va="center", fontstyle="italic")
 
-    # Row 1 (y=3.55): conditions
-    draw_box(2.0, 3.55, 2.6, 0.55, "Subspace-valued\ndata?", "#FFF9E6", fontsize=9)
-    draw_box(5.0, 3.55, 2.6, 0.55, "Cyclic\nconstraints?", "#FFF9E6", fontsize=9)
-    draw_box(8.0, 3.55, 2.6, 0.55, "Edge-specific\nheterogeneity?", "#FFF9E6", fontsize=9)
+    # Row positions with more vertical space
+    y_cond = 4.3
+    y_geo = 3.0
+    y_std = 1.7
 
-    # Row 2 (y=2.5): geometric methods
-    draw_box(2.0, 2.5, 2.5, 0.55,
-             "Grassmannian holonomy\n(Berry phase)", "#D5E8D4", fontsize=9, bold=True)
-    draw_box(5.0, 2.5, 2.5, 0.55,
-             "Sheaf cohomology\n($H^1$ obstruction)", "#DAE8FC", fontsize=9, bold=True)
-    draw_box(8.0, 2.5, 2.5, 0.55,
-             "Per-edge\nsheaf $Q$ test", "#E1D5E7", fontsize=9, bold=True)
+    # Row 1: conditions
+    draw_box(2.0, y_cond, 2.6, box_h, "Subspace-valued\ndata?", "#FFF9E6")
+    draw_box(5.0, y_cond, 2.6, box_h, "Cyclic\nconstraints?", "#FFF9E6")
+    draw_box(8.0, y_cond, 2.6, box_h, "Edge-specific\nheterogeneity?", "#FFF9E6")
 
-    # Row 3 (y=1.45): standard fallbacks
-    draw_box(2.0, 1.45, 2.5, 0.55,
-             "Scalar projection\n(partial correlation)", "#F8CECC", fontsize=9)
-    draw_box(5.0, 1.45, 2.5, 0.55,
-             "Cochran's $Q$\n(pairwise test)", "#F8CECC", fontsize=9)
-    draw_box(8.0, 1.45, 2.5, 0.55,
-             "Global $Q$ test\n($K$-means)", "#F8CECC", fontsize=9)
+    # Row 2: geometric methods — ALL green
+    draw_box(2.0, y_geo, 2.5, box_h,
+             "Grassmannian holonomy\n(Berry phase)", "#D5E8D4", bold=True)
+    draw_box(5.0, y_geo, 2.5, box_h,
+             "Sheaf cohomology\n($H^1$ obstruction)", "#D5E8D4", bold=True)
+    draw_box(8.0, y_geo, 2.5, box_h,
+             "Per-edge\nsheaf $Q$ test", "#D5E8D4", bold=True)
 
-    # Arrows: condition → geometric (Yes)
-    arrow(2.0, 3.275, 2.0, 2.78, "Yes")
-    arrow(5.0, 3.275, 5.0, 2.78, "Yes")
-    arrow(8.0, 3.275, 8.0, 2.78, "Yes")
+    # Row 3: standard fallbacks
+    draw_box(2.0, y_std, 2.5, box_h,
+             "Scalar projection\n(partial correlation)", "#F8CECC")
+    draw_box(5.0, y_std, 2.5, box_h,
+             "Cochran's $Q$\n(pairwise test)", "#F8CECC")
+    draw_box(8.0, y_std, 2.5, box_h,
+             "Global $Q$ test\n($K$-means)", "#F8CECC")
+
+    # Arrows: condition → geometric (Yes) — gap between box edge and arrow
+    gap = 0.08
+    arrow(2.0, y_cond - box_h/2 - gap, 2.0, y_geo + box_h/2 + gap, "Yes")
+    arrow(5.0, y_cond - box_h/2 - gap, 5.0, y_geo + box_h/2 + gap, "Yes")
+    arrow(8.0, y_cond - box_h/2 - gap, 8.0, y_geo + box_h/2 + gap, "Yes")
 
     # Arrows: geometric → standard (No)
-    arrow(2.0, 2.225, 2.0, 1.73, "No")
-    arrow(5.0, 2.225, 5.0, 1.73, "No")
-    arrow(8.0, 2.225, 8.0, 1.73, "No")
+    arrow(2.0, y_geo - box_h/2 - gap, 2.0, y_std + box_h/2 + gap, "No")
+    arrow(5.0, y_geo - box_h/2 - gap, 5.0, y_std + box_h/2 + gap, "No")
+    arrow(8.0, y_geo - box_h/2 - gap, 8.0, y_std + box_h/2 + gap, "No")
 
     ax.set_title("Boundary conditions: when geometric methods help",
                  fontsize=13, pad=8, fontweight="bold")

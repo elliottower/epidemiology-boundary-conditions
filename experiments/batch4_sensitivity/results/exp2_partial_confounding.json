@@ -1,0 +1,54 @@
+{
+  "experiment": "partial_confounding",
+  "results": [
+    {
+      "confound_fraction": 0.0,
+      "auroc_mean": 0.50815,
+      "auroc_std": 0.1251162559382273,
+      "auroc_ci_lo": 0.27975,
+      "auroc_ci_hi": 0.74
+    },
+    {
+      "confound_fraction": 0.1,
+      "auroc_mean": 0.5977,
+      "auroc_std": 0.1294554363478027,
+      "auroc_ci_lo": 0.32,
+      "auroc_ci_hi": 0.83
+    },
+    {
+      "confound_fraction": 0.2,
+      "auroc_mean": 0.69475,
+      "auroc_std": 0.11310586854801125,
+      "auroc_ci_lo": 0.47975,
+      "auroc_ci_hi": 0.8999999999999999
+    },
+    {
+      "confound_fraction": 0.3,
+      "auroc_mean": 0.7739000000000001,
+      "auroc_std": 0.09288589774556738,
+      "auroc_ci_lo": 0.58975,
+      "auroc_ci_hi": 0.92
+    },
+    {
+      "confound_fraction": 0.5,
+      "auroc_mean": 0.92955,
+      "auroc_std": 0.05594012424011945,
+      "auroc_ci_lo": 0.7997500000000001,
+      "auroc_ci_hi": 1.0
+    },
+    {
+      "confound_fraction": 0.7,
+      "auroc_mean": 1.0,
+      "auroc_std": 0.0,
+      "auroc_ci_lo": 1.0,
+      "auroc_ci_hi": 1.0
+    },
+    {
+      "confound_fraction": 1.0,
+      "auroc_mean": 1.0,
+      "auroc_std": 0.0,
+      "auroc_ci_lo": 1.0,
+      "auroc_ci_hi": 1.0
+    }
+  ]
+}

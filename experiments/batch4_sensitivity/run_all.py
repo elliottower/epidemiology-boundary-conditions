@@ -9,7 +9,7 @@ from datetime import datetime
 from pathlib import Path
 
 import numpy as np
-from scipy.stats import chi2
+from scipy.stats import chi2, pearsonr
 from tqdm import tqdm
 
 RESULTS_DIR = Path(__file__).resolve().parent / "results"
@@ -40,11 +40,10 @@ def exp1_heterogeneity_ratio_sweep():
 
     K = 8
     n_reps = 200
-    sigma_down = 0.005
+    sigma_down = 0.01
     ratios = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000]
 
-    base_mech_mean = np.array([0.40, 0.30, 0.20, 0.10, 0.00, 0.00, 0.05, 0.10])
-    base_down_mean = np.array([0.36, 0.36, 0.37, 0.37, 0.38, 0.36, 0.36, 0.37])
+    base_mean = 0.30
     se_per_stratum = 0.03
 
     results = []
@@ -54,10 +53,10 @@ def exp1_heterogeneity_ratio_sweep():
         peredge_correct = 0
 
         for _ in range(n_reps):
-            mech_coeffs_fwd = base_mech_mean + rng.normal(0, sigma_mech, K)
-            mech_coeffs_rev = base_mech_mean[::-1] + rng.normal(0, sigma_mech, K)
-            down_coeffs_1 = base_down_mean + rng.normal(0, sigma_down, K)
-            down_coeffs_2 = base_down_mean + rng.normal(0, sigma_down, K)
+            mech_coeffs_fwd = base_mean + rng.normal(0, sigma_mech, K)
+            mech_coeffs_rev = base_mean + rng.normal(0, sigma_mech, K)
+            down_coeffs_1 = base_mean + rng.normal(0, sigma_down, K)
+            down_coeffs_2 = base_mean + rng.normal(0, sigma_down, K)
 
             betas_mech_fwd = mech_coeffs_fwd + rng.normal(0, se_per_stratum, K)
             betas_mech_rev = mech_coeffs_rev + rng.normal(0, se_per_stratum, K)
@@ -70,7 +69,6 @@ def exp1_heterogeneity_ratio_sweep():
             q_down_1 = compute_cochran_q(betas_down_1, ses)
             q_down_2 = compute_cochran_q(betas_down_2, ses)
 
-            all_betas = np.concatenate([betas_mech_fwd, betas_mech_rev, betas_down_1, betas_down_2])
             all_Qs = [q_mech_fwd["Q"], q_mech_rev["Q"], q_down_1["Q"], q_down_2["Q"]]
             global_Q = sum(all_Qs)
             global_p = float(1.0 - chi2.cdf(global_Q, 4 * (K - 1)))
@@ -135,14 +133,13 @@ def exp2_partial_confounding():
                 X = np.column_stack([roi_size, np.ones(n_patients)])
                 bio_resid = bio - X @ np.linalg.lstsq(X, bio, rcond=None)[0]
                 dis_resid = disability - X @ np.linalg.lstsq(X, disability, rcond=None)[0]
-                from scipy.stats import pearsonr
                 partial_corrs.append(abs(pearsonr(bio_resid, dis_resid)[0]))
 
             for i in range(n_confounded):
                 coeff_confound = rng.uniform(0.3, 1.5)
                 coeff_real = rng.uniform(1.0, 3.0) * rng.choice([-1, 1])
                 bio = f * coeff_confound * roi_size + (1 - f) * coeff_real * disease_severity
-                bio += rng.normal(0, 3, n_patients)
+                bio += rng.normal(0, 0.8, n_patients)
                 is_real.append(0)
                 X = np.column_stack([roi_size, np.ones(n_patients)])
                 bio_resid = bio - X @ np.linalg.lstsq(X, bio, rcond=None)[0]
@@ -246,7 +243,7 @@ def exp3_minimum_detectable_heterogeneity():
     tau_80_k4 = results[1]["tau_80"]
     for ot in observed_taus:
         threshold = tau_80_k3 if ot["k"] == 3 else tau_80_k4
-        ot["above_tau80"] = ot["tau"] > threshold if threshold else None
+        ot["above_tau80"] = bool(ot["tau"] > threshold) if threshold else None
 
     detected_above = sum(1 for ot in observed_taus
                          if ot["expected"] == "non-transport" and ot["p"] < 0.05
